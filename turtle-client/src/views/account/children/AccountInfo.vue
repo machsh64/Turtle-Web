@@ -84,7 +84,7 @@ export default {
             formData.append("description", this.description);
             formData.append("gender", this.gender);
             const res = await this.$post("/user/info/update", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data || res.data.code !== 200) {
                 this.isLoading = false;

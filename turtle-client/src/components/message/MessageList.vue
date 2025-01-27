@@ -85,7 +85,7 @@ export default {
                     uid: this.mid,
                     offset: this.chat.detail.list.length
                 },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             // 记录DOM更新前滚动条的位置
             const scrollContainer = document.getElementById('message-list');
@@ -201,7 +201,7 @@ export default {
             formData.append("id", this.msgId);
             const res = await this.$post("/msg/chat-detailed/delete", formData, {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 }
             });
             if (res.data.code && res.data.code === 200) {

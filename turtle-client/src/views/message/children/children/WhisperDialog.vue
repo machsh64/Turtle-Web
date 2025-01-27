@@ -97,7 +97,7 @@ export default {
         async updateOnline() {
             await this.$get("/msg/chat/online", {
                 params: { from: this.user.uid },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             })
         },
         

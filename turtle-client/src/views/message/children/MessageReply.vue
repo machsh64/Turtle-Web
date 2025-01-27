@@ -12,7 +12,7 @@ export default {
             const formData = new FormData();
             formData.append("column", "reply");
             await this.$post("/msg-unread/clear", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             })
         }
     },

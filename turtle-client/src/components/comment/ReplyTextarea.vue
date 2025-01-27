@@ -140,7 +140,7 @@ export default {
 
             const response = await this.$post("/comment/add", formData, {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 }
             });
             if (!response.data) return;

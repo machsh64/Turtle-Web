@@ -231,14 +231,14 @@ export default {
         // 获取用户的收藏夹列表
         async getUserFavList(uid) {
             let res;
-            if (!localStorage.getItem("teri_token")) {
+            if (!localStorage.getItem("token")) {
                 res = await this.$get("/favorite/get-all/visitor", {
                     params: { uid: uid },
                 });
             } else {
                 res = await this.$get("/favorite/get-all/user", {
                     params: { uid: uid },
-                    headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                    headers: { Authorization: "Bearer " + localStorage.getItem("token") }
                 });
             }
             if (!res.data) return;
@@ -317,10 +317,10 @@ export default {
     },
     async created() {
         if (this.$route.path === "/space" || this.$route.path === "/space/") {
-            if (localStorage.getItem("teri_token")) {
+            if (localStorage.getItem("token")) {
                 try {
                     // 解析JWT获取当前用户uid
-                    const w = localStorage.getItem("teri_token").split('.')[1];
+                    const w = localStorage.getItem("token").split('.')[1];
                     const info = JSON.parse(atob(w));
                     this.$router.push(`/space/${info.sub}`);
                 } catch (e) {

@@ -62,7 +62,7 @@ export default {
                     offset: this.$store.state.chatList.length
                 },
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             if (res.data && res.data.data) {
@@ -78,7 +78,7 @@ export default {
         async createChat() {
             const res = await this.$get(`/msg/chat/create/${this.$route.params.mid}`, {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             if (res.data.code === 200) {
@@ -106,7 +106,7 @@ export default {
             }
             await this.$get(`/msg/chat/delete/${uid}`, {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
         },

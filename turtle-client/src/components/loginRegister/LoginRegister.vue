@@ -141,7 +141,7 @@ export default {
                 this.$store.state.isLoading = false;
             }
             if (result.data.code === 200) {
-                localStorage.setItem("teri_token", result.data.data.token); // 浏览器缓存token
+                localStorage.setItem("token", result.data.data.token); // 浏览器缓存token
                 this.$store.commit("updateUser", result.data.data.user);    // 更新vuex中当前用户信息
                 await this.$store.dispatch("getMsgUnread");
                 await this.initIMServer();  // 开启即时通信websocket
@@ -189,7 +189,7 @@ export default {
             await this.$store.dispatch("connectWebSocket");
             const connection = JSON.stringify({
                 code: 100,
-                content: "Bearer " + localStorage.getItem('teri_token'),
+                content: "Bearer " + localStorage.getItem('token'),
             });
             this.$store.state.ws.send(connection);
         },
@@ -198,7 +198,7 @@ export default {
         async getFavorites() {
             const res = await this.$get("/favorite/get-all/user", {
                 params: { uid: this.$store.state.user.uid },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data.data) return;
             // 将默认置顶
@@ -212,7 +212,7 @@ export default {
         async getLikeAndDisLikeComment() {
             const res = await this.$get("/comment/get-like-and-dislike", {
                 params: { uid: this.$store.state.user.uid },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
             this.$store.commit("updateLikeComment", res.data.data.userLike);

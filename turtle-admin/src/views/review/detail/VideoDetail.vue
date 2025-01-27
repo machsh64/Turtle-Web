@@ -103,7 +103,7 @@ export default {
                     vid: this.$route.params.vid,
                 },
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             if (res.data.data) {
@@ -123,7 +123,7 @@ export default {
             formData.append('status', vstatus);
             const res = await this.$post('/video/change/status', formData, {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 }
             });
             if (!res.data) {

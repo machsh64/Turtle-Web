@@ -626,7 +626,7 @@ export default {
             if (this.$store.state.user.uid) {
                 // 如果用户登录了，就算该用户观看了视频
                 const res = await this.$post("/video/play/user", formData, {
-                    headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                    headers: { Authorization: "Bearer " + localStorage.getItem("token") }
                 });
                 if (!res.data.data) return;
                 const data = res.data.data;
@@ -1201,7 +1201,7 @@ export default {
 
         // 发送弹幕
         sendDm() {
-            if (!localStorage.getItem('teri_token')) {
+            if (!localStorage.getItem('token')) {
                 this.$store.state.openLogin = true;
                 this.$nextTick(() => {
                     this.$store.state.openLogin = false;

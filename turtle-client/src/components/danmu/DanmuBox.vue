@@ -190,7 +190,7 @@ export default {
             const formData = new FormData();
             formData.append("id", id);
             const res = await this.$post("/danmu/delete", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
             this.$store.state.danmuList = this.$store.state.danmuList.filter(item => item.id !== id);

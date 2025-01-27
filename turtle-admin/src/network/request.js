@@ -38,7 +38,7 @@ export function get(url, config) {
           // 清空user信息
           store.state.user = {};
           // 清除本地token缓存
-          localStorage.removeItem("teri_token");
+          localStorage.removeItem("token");
           store.state.isLoading = false;
           router.push("/login");
         }
@@ -53,7 +53,7 @@ export function get(url, config) {
         // 清空user信息
         store.state.user = {};
         // 清除本地token缓存
-        localStorage.removeItem("teri_token");
+        localStorage.removeItem("token");
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
         router.push("/login");
@@ -122,7 +122,7 @@ export function post(url, data, headers) {
           // 清空user信息
           store.state.user = {};
           // 清除本地token缓存
-          localStorage.removeItem("teri_token");
+          localStorage.removeItem("token");
           store.state.isLoading = false;
           router.push("/login");
         }
@@ -137,7 +137,7 @@ export function post(url, data, headers) {
         // 清空user信息
         store.state.user = {};
         // 清除本地token缓存
-        localStorage.removeItem("teri_token");
+        localStorage.removeItem("token");
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
         router.push("/login");

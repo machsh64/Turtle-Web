@@ -145,7 +145,7 @@ export default createStore({
                         state.likeComment = [];
                         state.dislikeComment = [];
                         // 清除本地token缓存
-                        localStorage.removeItem("teri_token");
+                        localStorage.removeItem("token");
                     }
                     ElMessage.error(data.data);
                     break;
@@ -350,7 +350,7 @@ export default createStore({
             // 这里为了更方便捕捉到错误后做出反应，就不使用封装的函数了
             const result = await axios.get("/api/user/personal/info", {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             })
                 .catch(() => {
@@ -362,7 +362,7 @@ export default createStore({
                         context.commit('setWebSocket', null);
                     }
                     // 清除本地token缓存
-                    localStorage.removeItem("teri_token");
+                    localStorage.removeItem("token");
                     ElMessage.error("请登录后查看");
                 });
             if (!result) return;
@@ -384,18 +384,18 @@ export default createStore({
             // 发送退出请求，处理redis中的缓存信息，不能用异步，不然token过期导致退出失败，后面步骤卡死
             axios.get("/api/user/account/logout", {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             })
             .catch(() => {});
             // 清除本地token缓存
-            localStorage.removeItem("teri_token");
+            localStorage.removeItem("token");
         },
 
         // 获取全部未读消息数
         async getMsgUnread({ state }) {
             const res = await get("/msg-unread/all", {
-                headers: { Authorization: "Bearer " + localStorage.getItem('teri_token') }
+                headers: { Authorization: "Bearer " + localStorage.getItem('token') }
             });
             const data = res.data.data;
             state.msgUnread[0] = data.reply;

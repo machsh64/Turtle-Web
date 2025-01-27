@@ -54,16 +54,12 @@ export default {
         }
     },
     methods: {
-
         async getCarousels() {
             const res = await this.$get("/banner/getAll");
-            console.log('Response Data:', res.data); // 打印完整的响应数据
-
             if (res.data.code === 200) {
                 this.carousels = res.data.data;
-                console.log('Carousels Data:', this.carousels); // 确认 carousels 的数据是否正确
             } else {
-                console.error('Failed to fetch carousels:', res.data.msg);
+                console.error('轮播图获取失败:', res.data.msg);
             }
 
             // 确保在数据已经更新后再进行 commit

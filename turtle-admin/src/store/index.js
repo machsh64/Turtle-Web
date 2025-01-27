@@ -36,7 +36,7 @@ export default createStore({
             // 这里为了更方便捕捉到错误后做出反应，就不使用封装的函数了
             const result = await axios.get("/api/admin/personal/info", {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             })
             .catch(() => {
@@ -46,7 +46,7 @@ export default createStore({
                 // 清空user信息
                 context.state.user = {};
                 // 清除本地token缓存
-                localStorage.removeItem("teri_token");
+                localStorage.removeItem("token");
                 ElMessage.error("请登录后查看");
                 router.push("/login");
             });
@@ -58,7 +58,7 @@ export default createStore({
                 // 清空user信息
                 context.state.user = {};
                 // 清除本地token缓存
-                localStorage.removeItem("teri_token");
+                localStorage.removeItem("token");
                 ElMessage.error(result.data.message);
                 router.push("/login");
             }
@@ -79,11 +79,11 @@ export default createStore({
             // 发送退出请求，处理redis中的缓存信息，不能用异步，不然token过期导致退出失败，后面步骤卡死
             axios.get("/api/admin/account/logout", {
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             // 清除本地token缓存
-            localStorage.removeItem("teri_token");
+            localStorage.removeItem("token");
         }
     }
 })

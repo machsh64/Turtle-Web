@@ -80,7 +80,7 @@ export default {
             formData.append("desc", "");
             formData.append("visible", 1);
             const res = await this.$post("/favorite/create", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) {
                 ElMessage.error("特丽丽被玩坏了QAQ");
@@ -110,7 +110,7 @@ export default {
             formData.append("adds", add.join(','));
             formData.append("removes", remove.join(','));
             const res = await this.$post("/video/collect", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             })
             if (!res.data) return;
             if (isCollect) {

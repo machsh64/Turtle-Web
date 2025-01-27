@@ -132,7 +132,7 @@ const router = createRouter({
 
 // 本地没有token就跳到登录界面
 router.beforeEach((to, from, next) => {
-    if (to.meta.requestAuth && !localStorage.getItem("teri_token")) {
+    if (to.meta.requestAuth && !localStorage.getItem("token")) {
         next({ name: "index" });
     } else {
         next();

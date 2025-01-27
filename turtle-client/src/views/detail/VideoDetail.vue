@@ -438,7 +438,7 @@ export default {
                 this.comment = res.data.data.stats.comment;
             }
             this.isDescTooLong();
-            if (localStorage.getItem("teri_token")) {
+            if (localStorage.getItem("token")) {
                 this.getCollectedFids();
             }
             return true;
@@ -521,7 +521,7 @@ export default {
             formData.append("isLove", isLove);
             formData.append("isSet", isSet);
             const res = await this.$post("/video/love-or-not", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data.data) {
                 this.loveLoading = false;
@@ -551,7 +551,7 @@ export default {
         async getCollectedFids() {
             const res = await this.$get("/video/collected-fids", {
                 params: { vid: Number(this.video.vid) },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
             this.collectedFids = new Set(res.data.data);
@@ -663,7 +663,7 @@ export default {
 
         // 发送弹幕
         sendDanmu(dm) {
-            if (!localStorage.getItem('teri_token')) {
+            if (!localStorage.getItem('token')) {
                 this.$store.state.openLogin = true;
                 this.$nextTick(() => {
                     this.$store.state.openLogin = false;
@@ -671,7 +671,7 @@ export default {
                 return;
             }
             const dmJson = JSON.stringify({
-                token: "Bearer " + localStorage.getItem('teri_token'),
+                token: "Bearer " + localStorage.getItem('token'),
                 data: dm
             });
             this.socket.send(dmJson);

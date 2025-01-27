@@ -115,7 +115,7 @@ export default {
                     vstatus: this.videoStatus,
                 },
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             if (res.data.data) {
@@ -135,7 +135,7 @@ export default {
                     quantity: 10,
                 },
                 headers: {
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             });
             if (res.data.data) {

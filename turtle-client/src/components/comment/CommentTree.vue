@@ -249,7 +249,7 @@ export default {
             formData.append("id", cid);
 
             const res = await this.$post("/comment/delete", formData,
-                { headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") } })
+                { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
 
             if (!res.data) return;
 
@@ -305,7 +305,7 @@ export default {
             formData.append("isSet", isSet);
 
             const res = await this.$post("/comment/love-or-not", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
 

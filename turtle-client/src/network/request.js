@@ -44,7 +44,7 @@ export function get(url, config) {
           store.commit('setWebSocket', null);
         }
         // 清除本地token缓存
-        localStorage.removeItem("teri_token");
+        localStorage.removeItem("token");
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
       } else {
@@ -119,7 +119,7 @@ export function post(url, data, headers) {
           store.commit('setWebSocket', null);
         }
         // 清除本地token缓存
-        localStorage.removeItem("teri_token");
+        localStorage.removeItem("token");
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
       } else {

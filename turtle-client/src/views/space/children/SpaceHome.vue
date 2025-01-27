@@ -172,14 +172,14 @@ export default {
         // 获取用户收藏夹
         async getFavList() {
             let res;
-            if (!localStorage.getItem("teri_token")) {
+            if (!localStorage.getItem("token")) {
                 res = await this.$get("/favorite/get-all/visitor", {
                     params: { uid: this.uid },
                 });
             } else {
                 res = await this.$get("/favorite/get-all/user", {
                     params: { uid: this.uid },
-                    headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                    headers: { Authorization: "Bearer " + localStorage.getItem("token") }
                 });
             }
             if (!res.data) return;

@@ -202,7 +202,7 @@ export default {
             formData.append("vid", info.vid);
             formData.append("fid", info.fid);
             const res = await this.$post("/video/cancel-collect", formData, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data || res.data.code !== 200) return;
             this.favVideos = this.favVideos.filter(item => item.video.vid !== info.vid);

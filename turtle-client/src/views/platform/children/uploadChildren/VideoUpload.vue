@@ -905,7 +905,7 @@ export default {
                 this.$post("/video/add", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                        Authorization: "Bearer " + localStorage.getItem("token"),
                     }
                 })
                 .then(res => {
@@ -932,7 +932,7 @@ export default {
         async askCurrentChunk(hash) {
             return await this.$get("/video/ask-chunk", {
                 params: { hash: hash },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
         },
 
@@ -941,7 +941,7 @@ export default {
             return await this.$post("/video/upload-chunk", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: "Bearer " + localStorage.getItem("teri_token"),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 }
             })
         },
@@ -950,7 +950,7 @@ export default {
         async cancelUpload(hash) {
             return await this.$get("/video/cancel-upload", {
                 params: { hash: hash },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
         },
     }

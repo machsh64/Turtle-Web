@@ -50,7 +50,7 @@ export default {
             await this.$store.dispatch("connectWebSocket");
             const connection = JSON.stringify({
                 code: 100,
-                content: "Bearer " + localStorage.getItem('teri_token'),
+                content: "Bearer " + localStorage.getItem('token'),
             });
             this.$store.state.ws.send(connection);
         },
@@ -64,7 +64,7 @@ export default {
         async getFavorites() {
             const res = await this.$get("/favorite/get-all/user", {
                 params: { uid: this.$store.state.user.uid },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
             // 将默认置顶
@@ -78,7 +78,7 @@ export default {
         async getLikeAndDisLikeComment() {
             const res = await this.$get("/comment/get-like-and-dislike", {
                 params: { uid: this.$store.state.user.uid },
-                headers: { Authorization: "Bearer " + localStorage.getItem("teri_token") }
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
             if (!res.data) return;
             this.$store.commit("updateLikeComment", res.data.data.userLike);
@@ -88,11 +88,11 @@ export default {
     },
     async created() {
         // 如果缓存中有token，尝试获取用户数据，并建立全双工通信
-        if (localStorage.getItem("teri_token")) {
+        if (localStorage.getItem("token")) {
             await this.$store.dispatch("getPersonalInfo");
         }
         // 有可能上面获取信息时token过期就清掉了 所以这里再做个存在判断
-        if (localStorage.getItem("teri_token")) {
+        if (localStorage.getItem("token")) {
             this.$store.dispatch("getMsgUnread");
             await this.initIMServer();
             await this.getFavorites();
