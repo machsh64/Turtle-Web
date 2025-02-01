@@ -58,7 +58,7 @@
                     : `transform: translateX(${asideOffsetX}px);`"
         >
             <div class="aside-top">
-                <a class="logo" href="http://localhost:8787" target="_blank">
+                <a class="logo" href="http://localhost:8789" target="_blank">
                     <img src="~assets/img/teriteri-pink.png" alt="">
                 </a>
             </div>
@@ -102,14 +102,6 @@
                         <el-menu-item index="/review/video">
                             <i class="iconfont icon-shipinshenhe"></i>
                             <span>视频审核</span>
-                        </el-menu-item>
-                        <el-menu-item index="/review/article">
-                            <i class="iconfont icon-wenzhang"></i>
-                            <span>文章审核</span>
-                        </el-menu-item>
-                        <el-menu-item index="/review/avatar">
-                            <i class="iconfont icon-touxiang"></i>
-                            <span>头像审核</span>
                         </el-menu-item>
                         <el-menu-item index="/review/dynamic">
                             <i class="iconfont icon-dongtai"></i>

@@ -110,22 +110,29 @@
             </el-dialog>
 
             <!-- 新增弹窗 -->
-            <el-dialog class="edit-dialog" v-model="addDialogVisible" title="新增轮播图" append-to-body>
+            <el-dialog style="width: 37%;" v-model="addDialogVisible" title="新增轮播图" append-to-body>
                 <el-form :model="newCarousel" label-width="100px">
                     <el-form-item label="标题">
                         <el-input v-model="newCarousel.title"></el-input>
                     </el-form-item>
                     <el-form-item label="封面">
-                        <el-upload class="upload-demo" action="/file/min-upload-img" :headers="uploadHeaders"
-                            :on-success="handleUploadSuccess" :before-upload="beforeUpload" :show-file-list="false">
+                        <el-upload class="upload-demo" :show-file-list="false" :before-upload="beforeUpload">
                             <el-button type="primary">点击上传</el-button>
                             <template #tip>
-                                <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div class="el-upload__tip">只能上传 jpg/png 文件，且不超过 3MB</div>
                             </template>
                         </el-upload>
+                        <!-- 进度条 -->
+                        <el-progress v-if="uploadProgress > 0 && uploadProgress < 100"
+                            :percentage="uploadProgress"></el-progress>
+                        <!-- 预览已上传的图片 -->
+                        <div v-if="newCarousel.url" style="margin-top: 10px;">
+                            <img :src="newCarousel.url" alt="预览图"
+                                style="width: 100px; height: 100px; border-radius: 8px;" />
+                        </div>
                     </el-form-item>
                     <el-form-item label="标题颜色">
-                        <el-color-picker v-model="newCarousel.color" show-alpha></el-color-picker>
+                        <el-color-picker v-model="newCarousel.color" :show-alpha="false" format="hex"></el-color-picker>
                     </el-form-item>
                     <el-form-item label="跳转URL">
                         <el-input v-model="newCarousel.target"></el-input>
@@ -146,22 +153,29 @@
             </el-dialog>
 
             <!-- 编辑弹窗 -->
-            <el-dialog class="edit-dialog" v-model="editDialogVisible" title="编辑轮播图" append-to-body>
+            <el-dialog style="width: 37%;" v-model="editDialogVisible" title="编辑轮播图" append-to-body>
                 <el-form :model="editingCarousel" label-width="100px">
                     <el-form-item label="标题">
                         <el-input v-model="editingCarousel.title"></el-input>
                     </el-form-item>
                     <el-form-item label="封面">
-                        <el-upload class="upload-demo" action="/file/min-upload-img" :headers="uploadHeaders"
-                            :on-success="handleEditUploadSuccess" :before-upload="beforeUpload" :show-file-list="false">
+                        <el-upload class="upload-demo" :show-file-list="false" :before-upload="beforeUpload">
                             <el-button type="primary">点击上传</el-button>
                             <template #tip>
-                                <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                <div class="el-upload__tip">只能上传 jpg/png 文件，且不超过 3MB</div>
                             </template>
                         </el-upload>
+                        <!-- 进度条 -->
+                        <el-progress v-if="uploadProgress > 0 && uploadProgress < 100"
+                            :percentage="uploadProgress"></el-progress>
+                        <!-- 预览已上传的图片 -->
+                        <div v-if="editingCarousel.url" style="margin-top: 10px;">
+                            <img :src="editingCarousel.url" alt="预览图"
+                                style="width: 100px; height: 100px; border-radius: 8px;" />
+                        </div>
                     </el-form-item>
                     <el-form-item label="标题颜色">
-                        <el-color-picker v-model="editingCarousel.color" show-alpha></el-color-picker>
+                        <el-color-picker v-model="editingCarousel.color" :show-alpha="false" format="hex"></el-color-picker>
                     </el-form-item>
                     <el-form-item label="跳转URL">
                         <el-input v-model="editingCarousel.target"></el-input>
@@ -185,6 +199,8 @@
 </template>
 
 <script>
+import fileUpload from '@/utils/fileUpload';
+
 export default {
     name: "CarouselManage",
     data() {
@@ -203,7 +219,8 @@ export default {
             editDialogVisible: false,  // 控制编辑弹出框的显示
             editingCarousel: {},  // 存储正在编辑的轮播图数据
             addDialogVisible: false,  // 控制新增弹出框的显示
-            newCarousel: {}  // 存储正在新增的轮播图数据
+            newCarousel: {},  // 存储正在新增的轮播图数据
+            uploadProgress: 0,  // 上传进度
         }
     },
     computed: {
@@ -346,25 +363,76 @@ export default {
                 console.log('取消删除');
             });
         },
-        handleUploadSuccess(response) {
-            console.log('Upload success:', response);
-            this.newCarousel.url = response.data.url;  // 假设返回的数据结构为 { data: { url: '...' } }
-        },
-        handleEditUploadSuccess(response) {
-            console.log('Edit upload success:', response);
-            this.editingCarousel.url = response.data.url;  // 假设返回的数据结构为 { data: { url: '...' } }
-        },
-        beforeUpload(file) {
+        async beforeUpload(file) {
             const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png';
-            const isLt3000K = file.size / 1024 < 3000;
+            const isLt3M = file.size / 1024 / 1024 < 3;
 
             if (!isJPGorPNG) {
-                this.$message.error('只能上传jpg/png文件!');
+                this.$message.error('只能上传 JPG/PNG 格式的图片！');
+                return false;
             }
-            if (!isLt3000K) {
-                this.$message.error('上传图片大小不能超过 3MB!');
+            if (!isLt3M) {
+                this.$message.error('文件大小不能超过 3MB！');
+                return false;
             }
-            return isJPGorPNG && isLt3000K;
+
+            try {
+                const croppedFile = await this.cropImage(file, 2560, 1440); // 进行裁剪
+
+                const url = await fileUpload.uploadImgMinio(croppedFile, (progress) => {
+                    this.uploadProgress = progress;  // 记录上传进度
+                });
+
+                this.newCarousel.url = url;
+                this.editingCarousel.url = url;
+                this.$message.success('上传成功！');
+            } catch (error) {
+                console.error('上传失败', error);
+                this.$message.error('上传失败');
+            }
+            return false;  // 阻止 `el-upload` 继续执行默认上传逻辑
+        },
+
+        // 使用 Canvas 进行裁剪
+        cropImage(file, targetWidth, targetHeight) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        // 创建 Canvas
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // 计算等比例缩放
+                        const scale = Math.max(targetWidth / img.width, targetHeight / img.height);
+                        const scaledWidth = img.width * scale;
+                        const scaledHeight = img.height * scale;
+
+                        // 居中裁剪
+                        const offsetX = (scaledWidth - targetWidth) / 2;
+                        const offsetY = (scaledHeight - targetHeight) / 2;
+
+                        canvas.width = targetWidth;
+                        canvas.height = targetHeight;
+
+                        ctx.drawImage(img, -offsetX, -offsetY, scaledWidth, scaledHeight);
+
+                        // 导出裁剪后的图片
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(new File([blob], file.name, { type: file.type }));
+                            } else {
+                                reject(new Error('裁剪失败'));
+                            }
+                        }, file.type);
+                    };
+                    img.onerror = () => reject(new Error('图片加载失败'));
+                };
+                reader.onerror = () => reject(new Error('文件读取失败'));
+            });
         },
 
         // 事件
@@ -714,10 +782,6 @@ export default {
 .v-table-page .total-count {
     font-size: 14px;
     color: #333;
-}
-
-.edit-dialog {
-    width: 37%
 }
 
 .video-preview {
