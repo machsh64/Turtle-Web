@@ -109,7 +109,7 @@ export default {
 
 <style scoped>
 .search-layout {
-    padding-top: 64px;
+    padding-top: 34px;
 }
 
 .search-entry-page {

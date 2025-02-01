@@ -779,7 +779,7 @@ export default {
 <style scoped>
 .video-container {
     width: auto;
-    padding: 64px 10px 0px;
+    padding: 28px 10px 0px;
     max-width: 2540px;
     min-width: 1080px;
     margin: 0 auto;

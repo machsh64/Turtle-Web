@@ -2,7 +2,7 @@
     <div class="comment-textarea">
         <div class="box-normal">
             <div class="reply-box-avatar">
-                <div class="teriteri-avatar">
+                <div class="turtle-avatar">
                     <VAvatar :img="this.$store.state.user.avatar_url" :size="isWideWindow ? 48 : 40" :auth="this.$store.state.user.auth" />
                 </div>
             </div>
@@ -188,7 +188,7 @@ export default {
     height: 48px;
 }
 
-.teriteri-avatar {
+.turtle-avatar {
     display: block;
     position: relative;
     background-size: cover;

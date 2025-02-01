@@ -1,5 +1,5 @@
 <template>
-    <div class="header-bar" :class="isFixHeaderBar ? 'slide-down' : ''">
+    <div class="header-bar slide-down">
         <!-- 左边 -->
         <div class="left-entry">
             <div
@@ -11,36 +11,11 @@
             >
                 <picture class="logo">
                     <img src="~assets/img/teriteri-pink.png" alt="">
-                </picture>
-                <span>首页</span>
-                <i class="iconfont icon-xiajiantou" :class="isOpen ? 'arrow-down' : ''"></i>
-            </div>
-            <div class="entry-title" v-else @click="this.$router.push('/')">
-                <i class="iconfont icon-dianshi"></i>
-                <span>首页</span>
-            </div>
-            <div class="default-entry" @click="noPage">
-                <span>番剧</span>
-            </div>
-            <div class="default-entry" @click="noPage">
-                <span>漫画</span>
-            </div>
-            <div class="default-entry" @click="noPage">
-                <span>直播</span>
-            </div>
-            <div class="default-entry" @click="noPage">
-                <span>游戏中心</span>
-            </div>
-            <div class="default-entry" @click="noPage">
-                <span>会员购</span>
-            </div>
-            <div class="download-entry" @click="noPage" v-if="!isFixHeaderBar">
-                <i class="iconfont icon-xiazai"></i>
-                <span>下载客户端</span>
+                </picture>     
             </div>
         </div>
         <!-- 中间 -->
-        <div class="center-search-container" :style="isShowSearchInput ? '' : 'display: none;'">
+        <div class="center-search-container" :style="isShowSearchInput ? '' : 'visibility: hidden;'">
             <div class="center-search__bar" :class="isSearchPopShow ? 'is-focus' : ''">
                 <!-- 输入框 -->
                 <div
@@ -53,7 +28,7 @@
                             class="nav-search-input"
                             :class="isSearchPopShow ? 'nav-search-input-active' : ''"
                             v-model="searchInput"
-                            placeholder="请输入搜索内容"
+                            placeholder="搜索"
                             @focus="searchPopShow()"
                             @keyup.enter="goSearch"
                             @input="handleInput"
@@ -103,7 +78,7 @@
                     </div>
                     <div class="trending" v-if="searchInput == ''">
                         <div class="header">
-                            <div class="title">teriteri热搜</div>
+                            <div class="title">热搜</div>
                         </div>
                         <div class="trendings-double" v-if="screenWidth >= 1450">
                             <div class="trendings-col" style="max-width: calc(50% - 5px);">
@@ -165,92 +140,12 @@
         </div>
         <!-- 右边 -->
         <div class="right-entry">
-            <!-- 未登录状态 -->
-            <div class="header-avatar-wrap" v-if="!this.$store.state.isLogin">
-                <div class="default-login" @click="dialogVisible = true;">
-                    登录
-                </div>
-            </div>
-            <!-- 登录后显示头像 -->
-            <div v-else class="header-avatar-wrap" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-                <a :href="`/space/${user.uid}`" target="_blank" class="header-avatar-wrap--container mini-avatar--small">
-                    <picture class="v-img">
-                        <img :src="user.avatar_url" :alt="`${user.nickname}的头像`" />
-                    </picture>
-                </a>
-                <div class="v-popover to-bottom">
-                    <div class="avatar-panel-popover" :class="isPopoverShow ? 'popShow' : 'popHide'" :style="{ display: popoverDisplay }">
-                        <a :href="`/space/${user.uid}`" target="_blank" class="nickname" :class="user.vip !== 0 ? 'vip-name' : ''">
-                            <span>{{ user.nickname }}</span>
-                        </a>
-                        <div class="vip-level-tag">
-                            <div class="vip-tag" v-if="user.vip !== 0">
-                                {{ user.vip === 1 ? '月度' : user.vip === 2 ? '季度' : '年度' }}大会员
-                            </div>
-                            <VLevel class="level" :level="handleLevel(user.exp)" :size="12"></VLevel>
-                            <div class="gender female" v-if="user.gender == 0"><el-icon size="12"><Female /></el-icon></div>
-                            <div class="gender male" v-if="user.gender == 1"><el-icon size="12"><Male /></el-icon></div>
-                        </div>
-                        <div class="coins">
-                            <span class="coins-text">硬币: </span>
-                            <span class="coins-num">{{ user.coin }}</span>
-                        </div>
-                        <div class="counts">
-                            <a :href="`/space/${user.uid}/fans/follow`" target="_blank" class="counts-item">
-                                <div class="count-num">{{ handleNum(user.followsCount) }}</div>
-                                <div class="count-text">关注</div>
-                            </a>
-                            <a :href="`/space/${user.uid}/fans/fans`" target="_blank" class="counts-item">
-                                <div class="count-num">{{ handleNum(user.fansCount) }}</div>
-                                <div class="count-text">粉丝</div>
-                            </a>
-                            <a :href="`/space/${user.uid}/dynamic`" target="_blank" class="counts-item">
-                                <div class="count-num">{{ handleNum(0) }}</div>
-                                <div class="count-text">动态</div>
-                            </a>
-                        </div>
-                        <div class="single-item middle" @click="openNewPage('/account')">
-                            <div class="single-item-left">
-                                <el-icon size="16"><User /></el-icon>
-                                <span>个人中心</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
-                        </div>
-                        <div class="single-item middle" @click="openNewPage('/platform/upload-manager')">
-                            <div class="single-item-left">
-                                <el-icon size="16"><Document /></el-icon>
-                                <span>投稿管理</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
-                        </div>
-                        <div class="single-item middle" @click="noPage">
-                            <div class="single-item-left">
-                                <el-icon size="16"><Star /></el-icon>
-                                <span>推荐服务</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
-                        </div>
-                        <div class="placeholder"></div>
-                        <div class="single-item logout" @click="logout">
-                            <i class="iconfont icon-dengchu"></i>
-                            <span>退出登录</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="vip-wrap">
-                <div class="right-entry--outside" @click="noPage">
-                    <i class="iconfont icon-huiyuan1"></i>
-                    <span>大会员</span>
-                </div>
-            </div>
             <div class="v-popover-wrap">
                 <VPopover pop-style="padding-top: 17px;">
                     <template #reference>
                         <div class="red-num--dynamic" v-if="user.uid && msgUnread > 0">{{ msgUnread > 99 ? '99+' : msgUnread }}</div>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? openNewPage('/message') : dialogVisible = true;">
                             <i class="iconfont icon-xinfeng"></i>
-                            <span>消息</span>
                         </div>
                     </template>
                     <template #content>
@@ -302,7 +197,6 @@
                     <template #reference>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-fengche"></i>
-                            <span>动态</span>
                         </div>
                     </template>
                     <template #content>
@@ -323,7 +217,6 @@
                     <template #reference>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-shoucang"></i>
-                            <span>收藏</span>
                         </div>
                     </template>
                     <template #content>
@@ -344,7 +237,6 @@
                     <template #reference>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-lishijilu"></i>
-                            <span>历史</span>
                         </div>
                     </template>
                     <template #content>
@@ -360,16 +252,88 @@
                     </template>
                 </VPopover>
             </div>
-            <div 
-                class="right-entry-item"
-                @click="this.$store.state.isLogin ? openNewPage('/platform') : dialogVisible = true;"
-            >
-                <div class="right-entry--outside">
-                    <i class="iconfont icon-dengpao"></i>
-                    <span>创作中心</span>
+            <!-- 未登录状态 -->
+            <div class="header-avatar-wrap" v-if="!this.$store.state.isLogin">
+                <div class="default-login" @click="dialogVisible = true;">
+                    登录
                 </div>
             </div>
-            <div
+            <!-- 登录后显示头像 -->
+            <div v-else class="header-avatar-wrap" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+                <a :href="`/space/${user.uid}`" target="_blank" class="header-avatar-wrap--container mini-avatar--small">
+                    <picture class="v-img">
+                        <img :src="user.avatar_url" :alt="`${user.nickname}的头像`" />
+                    </picture>
+                </a>
+                <div class="v-popover to-bottom">
+                    <div class="avatar-panel-popover" :class="isPopoverShow ? 'popShow' : 'popHide'" :style="{ display: popoverDisplay }">
+                        <a :href="`/space/${user.uid}`" target="_blank" class="nickname" :class="user.vip !== 0 ? 'vip-name' : ''">
+                            <span>{{ user.nickname }}</span>
+                        </a>
+                        <div class="vip-level-tag">
+                            <div class="vip-tag" v-if="user.vip !== 0">
+                                {{ user.vip === 1 ? '月度' : user.vip === 2 ? '季度' : '年度' }}大会员
+                            </div>
+                            <VLevel class="level" :level="handleLevel(user.exp)" :size="12"></VLevel>
+                            <div class="gender female" v-if="user.gender == 0"><el-icon size="12"><Female /></el-icon></div>
+                            <div class="gender male" v-if="user.gender == 1"><el-icon size="12"><Male /></el-icon></div>
+                        </div>
+                        <div class="coins">
+                            <span class="coins-text">硬币: </span>
+                            <span class="coins-num">{{ user.coin }}</span>
+                        </div>
+                        <div class="counts">
+                            <a :href="`/space/${user.uid}/fans/follow`" target="_blank" class="counts-item">
+                                <div class="count-num">{{ handleNum(user.followsCount) }}</div>
+                                <div class="count-text">关注</div>
+                            </a>
+                            <a :href="`/space/${user.uid}/fans/fans`" target="_blank" class="counts-item">
+                                <div class="count-num">{{ handleNum(user.fansCount) }}</div>
+                                <div class="count-text">粉丝</div>
+                            </a>
+                            <a :href="`/space/${user.uid}/dynamic`" target="_blank" class="counts-item">
+                                <div class="count-num">{{ handleNum(0) }}</div>
+                                <div class="count-text">动态</div>
+                            </a>
+                        </div>
+                        <div class="single-item middle" @click="openNewPage('/account')">
+                            <div class="single-item-left">
+                                <el-icon size="16"><User /></el-icon>
+                                <span>个人中心</span>
+                            </div>                            
+                            <el-icon><ArrowRightBold /></el-icon>
+                        </div>
+                        <div class="single-item middle" @click="openNewPage('/message')">
+                            <div class="single-item-left">
+                                <el-icon size="16"><Message /></el-icon>
+                                <span>消息列表</span>
+                            </div>                            
+                            <el-icon><ArrowRightBold /></el-icon>
+                        </div>
+                        <div class="single-item middle" @click="openNewPage('/platform/upload-manager')">
+                            <div class="single-item-left">
+                                <el-icon size="16"><Document /></el-icon>
+                                <span>投稿管理</span>
+                            </div>                            
+                            <el-icon><ArrowRightBold /></el-icon>
+                        </div>
+                        <div class="single-item middle" @click="noPage">
+                            <div class="single-item-left">
+                                <el-icon size="16"><Star /></el-icon>
+                                <span>推荐服务</span>
+                            </div>                            
+                            <el-icon><ArrowRightBold /></el-icon>
+                        </div>
+                        <div class="placeholder"></div>
+                        <div class="single-item logout" @click="logout">
+                            <i class="iconfont icon-dengchu"></i>
+                            <span>退出登录</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
                 class="right-entry-item right-entry-item--upload"
                 @click="this.$store.state.isLogin ? openNewPage('/platform/upload') : dialogVisible = true;"
             >
@@ -378,7 +342,6 @@
                     <span>投稿</span>
                 </div>
             </div>
-        </div>
     </div>
     <!-- 登录框 -->
     <el-dialog v-model="dialogVisible" :close-on-click-modal="false" destroy-on-close align-center>
@@ -432,7 +395,7 @@
             isFixHeaderBar: {
                 type: Boolean,
                 default() {
-                    return false;
+                    return true;
                 }
             },
             // 是否显示搜索输入框
@@ -654,7 +617,7 @@
     padding: 0 24px;
     max-width: 2560px;
     width: 100%;
-    height: 64px;
+    height: 45px;
 }
 
 .left-entry {
@@ -676,7 +639,6 @@
     left: unset;
     animation: headerSlideDown .3s linear forwards;
     background: var(--bg1);
-    box-shadow: 0 2px 4px rgba(0,0,0,.08);
     background: var(--bg1_float);
 }
 
@@ -742,7 +704,8 @@
 
 .center-search-container {
     flex: 1 auto; /* 宽度占80% 居中*/
-    height: 40px;
+    margin-left: 13%;
+    height: 35px;
 }
 
 .center-search-container .is-focus {
@@ -770,8 +733,8 @@
     z-index: 1;
     overflow: hidden;
     border: 1px solid var(--line_regular);
-    height: 40px;
-    border-radius: 8px;
+    height: 35px;
+    border-radius: 18px;
     background-color: var(--graph_bg_regular);
     opacity: .9;
     transition: background-color .3s;
@@ -1066,7 +1029,7 @@
 .header-avatar-wrap {
     position: relative;
     box-sizing: content-box;
-    padding-right: 10px;
+    padding-right: 0px;
     width: 50px;
     height: 50px;
     cursor: pointer;
@@ -1420,7 +1383,7 @@
 }
 
 .right-entry-item--upload {
-    margin-left: 15px;
+    margin-left: 0px;
 }
 
 .not-login {

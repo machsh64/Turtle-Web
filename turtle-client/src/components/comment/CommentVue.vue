@@ -1,6 +1,6 @@
 <template>
     <div class="comment">
-        <div class="teriteri-comment browser-pc">
+        <div class="turtle-comment browser-pc">
             <div class="comment-container">
                 <div class="reply-header">
                     <!-- 加载 -->
@@ -176,7 +176,7 @@ export default {
     position: relative;
 }
 
-.teriteri-comment .browser-pc {
+.turtle-comment .browser-pc {
     background-color: #FFFFFF;
 }
 
