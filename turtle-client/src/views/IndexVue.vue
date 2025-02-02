@@ -1,5 +1,6 @@
 <template>
     <div class="index">
+        <!-- 顶部横栏 -->
         <div class="large-header">
             <!-- 信息搜索栏 -->
             <HeaderBar></HeaderBar>
@@ -7,43 +8,120 @@
             <HeaderChannel></HeaderChannel>
         </div>
 
-        <!-- 主体布局 -->
-        <div class="main__layout">
-            <div class="recommended-container">
-                <div class="container">
-                    <!-- 轮播图 -->
-                    <div class="recommended-swipe">
-                        <div class="recommended-swipe-core">
-                            <!-- 骨架屏 -->
-                            <div class="recommended-swipe-shim">
-                                <div class="video-card" v-for="index in 2" :key="index">
-                                    <div class="video-card__skeleton">
-                                        <div class="video-card__skeleton--cover"></div>
-                                        <div class="video-card__skeleton--info">
-                                            <div class="video-card__skeleton--right">
-                                                <p class="video-card__skeleton--text"></p>
-                                                <p class="video-card__skeleton--text short"></p>
-                                                <p class="video-card__skeleton--light"></p>
+        <div class="layout-contaioner">
+            <!-- 侧边栏（可折叠）
+            <SiderLayout :isCollapsed="isCollapsed" @toggle="toggleSidebar"></SiderLayout> -->
+
+            <!-- 主体布局 -->
+            <div class="main__layout">
+                <div class="recommended-container">
+                    <div class="container">
+                        <!-- 轮播图 -->
+                        <div class="recommended-swipe">
+                            <div class="recommended-swipe-core">
+                                <!-- 骨架屏 -->
+                                <div class="recommended-swipe-shim">
+                                    <div class="video-card" v-for="index in 2" :key="index">
+                                        <div class="video-card__skeleton">
+                                            <div class="video-card__skeleton--cover"></div>
+                                            <div class="video-card__skeleton--info">
+                                                <div class="video-card__skeleton--right">
+                                                    <p class="video-card__skeleton--text"></p>
+                                                    <p class="video-card__skeleton--text short"></p>
+                                                    <p class="video-card__skeleton--light"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="shim-card"></div>
+                                    <div class="shim-card"></div>
+                                </div>
+                                <!-- 轮播图主体 -->
+                                <div class="recommended-swipe-body">
+                                    <div class="carousel-area">
+                                        <CarouselIndex></CarouselIndex>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 随机推荐 -->
+                        <div class="feed-card" v-for="index in loadingRandom ? 11 : randomVideos.length" :key="index">
+                            <div class="video-card">
+                                <!-- 骨架屏 -->
+                                <div class="video-card__skeleton" :class="loadingRandom ? 'loading_animation' : 'hide'">
+                                    <div class="video-card__skeleton--cover"></div>
+                                    <div class="video-card__skeleton--info">
+                                        <div class="video-card__skeleton--right">
+                                            <p class="video-card__skeleton--text"></p>
+                                            <p class="video-card__skeleton--text short"></p>
+                                            <p class="video-card__skeleton--light"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 实体内容 -->
+                                <div class="video-card__wrap" v-if="!loadingRandom">
+                                    <a :href="`/video/${randomVideos[index - 1].video.vid}`" target="_blank">
+                                        <div class="video-card__image">
+                                            <div class="video-card__image--wrap">
+                                                <picture class="video-card__cover">
+                                                    <img :src="randomVideos[index - 1].video.coverUrl"
+                                                        :alt="randomVideos[index - 1].video.title">
+                                                </picture>
+                                            </div>
+                                            <div class="video-card__mask">
+                                                <div class="video-card__stats">
+                                                    <div class="video-card__stats--left">
+                                                        <span class="video-card__stats--item">
+                                                            <i class="iconfont icon-bofangshu"></i>
+                                                            <span class="video-card__stats--text">
+                                                                {{ handleNum(randomVideos[index - 1].stats.play) }}
+                                                            </span>
+                                                        </span>
+                                                        <span class="video-card__stats--item">
+                                                            <i class="iconfont icon-danmushu"></i>
+                                                            <span class="video-card__stats--text">
+                                                                {{ handleNum(randomVideos[index - 1].stats.danmu) }}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="video-card__stats__duration">
+                                                        {{ handleDuration(randomVideos[index - 1].video.duration) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="video-card__info">
+                                        <div class="video-card__info--right">
+                                            <h3 class="video-card__info--tit">
+                                                <a :href="`/video/${randomVideos[index - 1].video.vid}`"
+                                                    target="_blank">
+                                                    {{ randomVideos[index - 1].video.title }}
+                                                </a>
+                                            </h3>
+                                            <div class="video-card__info--bottom">
+                                                <div class="video-card__info--icon-text" :style="'display: none;'">已关注
+                                                </div>
+                                                <a class="video-card__info--owner"
+                                                    :href="`/space/${randomVideos[index - 1].user.uid}`"
+                                                    target="_blank">
+                                                    <i class="iconfont icon-uper" :style="''"></i>
+                                                    <span class="video-card__info--author">{{ randomVideos[index -
+                                                        1].user.nickname }}</span>
+                                                    <span class="video-card__info--date">
+                                                        · {{ handleDate(randomVideos[index - 1].video.uploadDate) }}
+                                                    </span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="shim-card"></div>
-                                <div class="shim-card"></div>
-                            </div>
-                            <!-- 轮播图主体 -->
-                            <div class="recommended-swipe-body">
-                                <div class="carousel-area">
-                                    <CarouselIndex></CarouselIndex>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- 随机推荐 -->
-                    <div class="feed-card" v-for="index in loadingRandom ? 11 : randomVideos.length" :key="index">
-                        <div class="video-card">
+                        <!-- 累加推荐 -->
+                        <div class="video-card" v-for="(item, index) in cumulativeVideos" :key="index">
                             <!-- 骨架屏 -->
-                            <div class="video-card__skeleton" :class="loadingRandom ? 'loading_animation' : 'hide'">
+                            <div class="video-card__skeleton hide">
                                 <div class="video-card__skeleton--cover"></div>
                                 <div class="video-card__skeleton--info">
                                     <div class="video-card__skeleton--right">
@@ -54,13 +132,12 @@
                                 </div>
                             </div>
                             <!-- 实体内容 -->
-                            <div class="video-card__wrap" v-if="!loadingRandom">
-                                <a :href="`/video/${randomVideos[index - 1].video.vid}`" target="_blank">
+                            <div class="video-card__wrap">
+                                <a :href="`/video/${item.video.vid}`" target="_blank">
                                     <div class="video-card__image">
                                         <div class="video-card__image--wrap">
                                             <picture class="video-card__cover">
-                                                <img :src="randomVideos[index - 1].video.coverUrl"
-                                                    :alt="randomVideos[index - 1].video.title">
+                                                <img :src="item.video.coverUrl" :alt="item.video.title">
                                             </picture>
                                         </div>
                                         <div class="video-card__mask">
@@ -69,18 +146,18 @@
                                                     <span class="video-card__stats--item">
                                                         <i class="iconfont icon-bofangshu"></i>
                                                         <span class="video-card__stats--text">
-                                                            {{ handleNum(randomVideos[index - 1].stats.play) }}
+                                                            {{ handleNum(item.stats.play) }}
                                                         </span>
                                                     </span>
                                                     <span class="video-card__stats--item">
                                                         <i class="iconfont icon-danmushu"></i>
                                                         <span class="video-card__stats--text">
-                                                            {{ handleNum(randomVideos[index - 1].stats.danmu) }}
+                                                            {{ handleNum(item.stats.danmu) }}
                                                         </span>
                                                     </span>
                                                 </div>
                                                 <div class="video-card__stats__duration">
-                                                    {{ handleDuration(randomVideos[index - 1].video.duration) }}
+                                                    {{ handleDuration(item.video.duration) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -89,19 +166,19 @@
                                 <div class="video-card__info">
                                     <div class="video-card__info--right">
                                         <h3 class="video-card__info--tit">
-                                            <a :href="`/video/${randomVideos[index - 1].video.vid}`" target="_blank">
-                                                {{ randomVideos[index - 1].video.title }}
+                                            <a :href="`/video/${item.video.vid}`" target="_blank"
+                                                :title="item.video.title">
+                                                {{ item.video.title }}
                                             </a>
                                         </h3>
                                         <div class="video-card__info--bottom">
                                             <div class="video-card__info--icon-text" :style="'display: none;'">已关注</div>
-                                            <a class="video-card__info--owner"
-                                                :href="`/space/${randomVideos[index - 1].user.uid}`" target="_blank">
+                                            <a class="video-card__info--owner" :href="`/space/${item.user.uid}`"
+                                                target="_blank">
                                                 <i class="iconfont icon-uper" :style="''"></i>
-                                                <span class="video-card__info--author">{{ randomVideos[index -
-                                                    1].user.nickname }}</span>
+                                                <span class="video-card__info--author">{{ item.user.nickname }}</span>
                                                 <span class="video-card__info--date">
-                                                    · {{ handleDate(randomVideos[index - 1].video.uploadDate) }}
+                                                    · {{ handleDate(item.video.uploadDate) }}
                                                 </span>
                                             </a>
                                         </div>
@@ -109,92 +186,26 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- 累加推荐 -->
-                    <div class="video-card" v-for="(item, index) in cumulativeVideos" :key="index">
                         <!-- 骨架屏 -->
-                        <div class="video-card__skeleton hide">
-                            <div class="video-card__skeleton--cover"></div>
-                            <div class="video-card__skeleton--info">
-                                <div class="video-card__skeleton--right">
-                                    <p class="video-card__skeleton--text"></p>
-                                    <p class="video-card__skeleton--text short"></p>
-                                    <p class="video-card__skeleton--light"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 实体内容 -->
-                        <div class="video-card__wrap">
-                            <a :href="`/video/${item.video.vid}`" target="_blank">
-                                <div class="video-card__image">
-                                    <div class="video-card__image--wrap">
-                                        <picture class="video-card__cover">
-                                            <img :src="item.video.coverUrl" :alt="item.video.title">
-                                        </picture>
-                                    </div>
-                                    <div class="video-card__mask">
-                                        <div class="video-card__stats">
-                                            <div class="video-card__stats--left">
-                                                <span class="video-card__stats--item">
-                                                    <i class="iconfont icon-bofangshu"></i>
-                                                    <span class="video-card__stats--text">
-                                                        {{ handleNum(item.stats.play) }}
-                                                    </span>
-                                                </span>
-                                                <span class="video-card__stats--item">
-                                                    <i class="iconfont icon-danmushu"></i>
-                                                    <span class="video-card__stats--text">
-                                                        {{ handleNum(item.stats.danmu) }}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <div class="video-card__stats__duration">
-                                                {{ handleDuration(item.video.duration) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="video-card__info">
-                                <div class="video-card__info--right">
-                                    <h3 class="video-card__info--tit">
-                                        <a :href="`/video/${item.video.vid}`" target="_blank" :title="item.video.title">
-                                            {{ item.video.title }}
-                                        </a>
-                                    </h3>
-                                    <div class="video-card__info--bottom">
-                                        <div class="video-card__info--icon-text" :style="'display: none;'">已关注</div>
-                                        <a class="video-card__info--owner" :href="`/space/${item.user.uid}`"
-                                            target="_blank">
-                                            <i class="iconfont icon-uper" :style="''"></i>
-                                            <span class="video-card__info--author">{{ item.user.nickname }}</span>
-                                            <span class="video-card__info--date">
-                                                · {{ handleDate(item.video.uploadDate) }}
-                                            </span>
-                                        </a>
+                        <div class="video-card" v-for="index in 10" :key="index"
+                            :style="hasMore ? '' : 'display: none;'">
+                            <div class="video-card__skeleton loading_animation">
+                                <div class="video-card__skeleton--cover"></div>
+                                <div class="video-card__skeleton--info">
+                                    <div class="video-card__skeleton--right">
+                                        <p class="video-card__skeleton--text"></p>
+                                        <p class="video-card__skeleton--text short"></p>
+                                        <p class="video-card__skeleton--light"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- 骨架屏 -->
-                    <div class="video-card" v-for="index in 10" :key="index" :style="hasMore ? '' : 'display: none;'">
-                        <div class="video-card__skeleton loading_animation">
-                            <div class="video-card__skeleton--cover"></div>
-                            <div class="video-card__skeleton--info">
-                                <div class="video-card__skeleton--right">
-                                    <p class="video-card__skeleton--text"></p>
-                                    <p class="video-card__skeleton--text short"></p>
-                                    <p class="video-card__skeleton--light"></p>
-                                </div>
-                            </div>
+                    <div class="feed-roll-btn">
+                        <div class="roll-btn" @click="getRandomVideos(); refreshTime++;">
+                            <i class="iconfont icon-shuaxin" :style="`transform: rotate(${refreshTime * 360}deg);`"></i>
+                            <span>换一换</span>
                         </div>
-                    </div>
-                </div>
-                <div class="feed-roll-btn">
-                    <div class="roll-btn" @click="getRandomVideos(); refreshTime++;">
-                        <i class="iconfont icon-shuaxin" :style="`transform: rotate(${refreshTime * 360}deg);`"></i>
-                        <span>换一换</span>
                     </div>
                 </div>
             </div>
@@ -205,6 +216,7 @@
 <script>
 import HeaderBar from '@/components/headerBar/HeaderBar.vue';
 import HeaderChannel from '@/components/headerChannel/HeaderChannel.vue';
+// import SiderLayout from '@/components/siderLayout/SiderLayout.vue';
 import CarouselIndex from '@/components/carousel/CarouselIndex.vue';
 import { handleTime, handleNum, handleDate } from '@/utils/utils.js';
 
@@ -215,6 +227,7 @@ export default {
     components: {
         HeaderBar,
         HeaderChannel,
+        // SiderLayout,
         CarouselIndex,
     },
     data() {
@@ -237,6 +250,7 @@ export default {
             loadingMore: false,
             // 刷新次数
             refreshTime: 0,
+            isCollapsed: true, // 侧边栏默认收起
         }
     },
     computed: {
@@ -313,6 +327,10 @@ export default {
         // 处理投稿时间
         handleDate(date) {
             return handleDate(date);
+        },
+        // 侧边栏操作
+        toggleSidebar() {
+            this.isCollapsed = !this.isCollapsed;
         },
     },
     created() {
@@ -549,12 +567,27 @@ header .window-cover {
     pointer-events: none;
 }
 
+/* 主体布局：包含侧边栏和内容区 */
+.layout-container {
+    display: flex;
+    margin-top: 60px; /* 避免被顶部栏遮挡 */
+    height: calc(100vh - 60px);
+}
+
 .main__layout {
     background-color: #fff;
     margin: 0 auto;
     padding: 0 var(--layout-padding);
     max-width: calc(1980px + 2 * var(--layout-padding));
     width: 100%;
+    flex: 1;
+    /* padding: 16px; */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* 当侧边栏收起时，内容区域自动填充 */
+.main__layout.collapsed {
+    margin-left: 60px;
 }
 
 @media (max-width: 1139.9px) {
@@ -718,5 +751,17 @@ header .window-cover {
     .feed-roll-btn {
         opacity: 0.8;
     }
+}
+
+.sider-layout {
+    width: 220px;
+    transition: width 0.3s ease-in-out;
+    background: #f8f9fa;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 侧边栏收起时 */
+.sider-layout.collapsed {
+    width: 60px;
 }
 </style>

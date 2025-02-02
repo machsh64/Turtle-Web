@@ -12,6 +12,9 @@ const PlatformDanmu = () => import('@/views/platform/children/PlatformDanmu.vue'
 const VideoUpload = () => import('@/views/platform/children/uploadChildren/VideoUpload.vue')
 const TextUpload = () => import('@/views/platform/children/uploadChildren/TextUpload.vue')
 const VideoDetail = () => import('@/views/detail/VideoDetail.vue')
+const Category = () => import('@/views/category/CategoryView.vue')
+const CategoryPage = () => import('@/views/category/children/CategoryPage.vue')
+const CategoryRanking = () => import('@/views/category/children/CategoryRanking.vue')
 const Message = () => import('@/views/message/MessageView.vue')
 const MessageReply = () => import('@/views/message/children/MessageReply.vue')
 const MessageAt = () => import('@/views/message/children/MessageAt.vue')
@@ -84,6 +87,15 @@ const routes = [
         ]
     },
     { path: '/video/:vid', component: VideoDetail, meta: { requestAuth: false } },
+    { 
+        path: '/category',
+        component: Category,
+        meta: { requestAuth: false },
+        children: [
+            { path: '/category/:mcId', component: CategoryPage, meta: { requestAuth: false } },
+            { path: '/category/:mcId/ranking', component: CategoryRanking, meta: { requestAuth: false } },
+        ]
+    },
     {
         path: '/search',
         component: Search,

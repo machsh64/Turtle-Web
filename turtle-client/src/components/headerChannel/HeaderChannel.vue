@@ -16,50 +16,11 @@
             <div class="header-channel-fixed-right">
                 <div class="header-channel-fixed-right-left">
                     <div class="left-top">
-                        <a :href="`/v/anime`" target="_blank" class="header-channel-fixed-right-item">番剧</a>
-                        <a :href="`/movie`" target="_blank" class="header-channel-fixed-right-item">电影</a>
-                        <a :href="`/v/guochuang`" target="_blank" class="header-channel-fixed-right-item">国创</a>
-                        <a :href="`/tv`" target="_blank" class="header-channel-fixed-right-item">电视剧</a>
-                        <a :href="`/variety`" target="_blank" class="header-channel-fixed-right-item">综艺</a>
-                        <a :href="`/documentary`" target="_blank" class="header-channel-fixed-right-item">纪录片</a>
-                        <a :href="`/v/${item.mcId}`" target="_blank" class="header-channel-fixed-right-item"
-                            v-for="(item, index) in channels.slice(2)" :key="index">
+                        <a :href="`/category/${item.mcId}`" target="_blank" class="header-channel-fixed-right-item"
+                            v-for="(item, index) in channels" :key="index">
                             {{ item.mcName }}
                         </a>
-                        <a :href="`/v/life/daily`" target="_blank" class="header-channel-fixed-right-item">VLOG</a>
-                        <a :href="`/v/life/funny`" target="_blank" class="header-channel-fixed-right-item">搞笑</a>
-                        <a :href="`/v/game/stand_alone`" target="_blank"
-                            class="header-channel-fixed-right-item">单机游戏</a>
-                        <a :href="`/love`" target="_blank" class="header-channel-fixed-right-item">公益</a>
-                        <a :href="`/mooc`" target="_blank" class="header-channel-fixed-right-item">公开课</a>
                     </div>
-                </div>
-                <div class="header-channel-fixed-right-right">
-                    <a :href="`/read/home`" target="_blank" class="header-channel-fixed-right-item">专栏</a>
-                    <a :href="`/live`" target="_blank" class="header-channel-fixed-right-item">直播</a>
-                    <a :href="`/activity`" target="_blank" class="header-channel-fixed-right-item">活动</a>
-                    <a :href="`/cheese`" target="_blank" class="header-channel-fixed-right-item">课堂</a>
-                    <a :href="`/community`" target="_blank" class="header-channel-fixed-right-item"
-                        style="letter-spacing: 0px;">社区中心</a>
-                    <a :href="`/song`" target="_blank" class="header-channel-fixed-right-item"
-                        style="letter-spacing: 0px;">新歌热榜</a>
-                </div>
-                <div class="left-bottom">
-                    <a :href="`/v/anime`" target="_blank" class="header-channel-fixed-right-item">番剧</a>
-                    <a :href="`/movie`" target="_blank" class="header-channel-fixed-right-item">电影</a>
-                    <a :href="`/v/guochuang`" target="_blank" class="header-channel-fixed-right-item">国创</a>
-                    <a :href="`/tv`" target="_blank" class="header-channel-fixed-right-item">电视剧</a>
-                    <a :href="`/variety`" target="_blank" class="header-channel-fixed-right-item">综艺</a>
-                    <a :href="`/documentary`" target="_blank" class="header-channel-fixed-right-item">纪录片</a>
-                    <a :href="`/v/${item.mcId}`" target="_blank" class="header-channel-fixed-right-item"
-                        v-for="(item, index) in channels.slice(2)" :key="index">
-                        {{ item.mcName }}
-                    </a>
-                    <a :href="`/v/life/daily`" target="_blank" class="header-channel-fixed-right-item">VLOG</a>
-                    <a :href="`/v/life/funny`" target="_blank" class="header-channel-fixed-right-item">搞笑</a>
-                    <a :href="`/v/game/stand_alone`" target="_blank" class="header-channel-fixed-right-item">单机游戏</a>
-                    <a :href="`/love`" target="_blank" class="header-channel-fixed-right-item">公益</a>
-                    <a :href="`/mooc`" target="_blank" class="header-channel-fixed-right-item">公开课</a>
                 </div>
             </div>
             <div class="header-channel-fixed-arrow">
@@ -203,10 +164,7 @@ export default {
 
 .left-top .header-channel-fixed-right-item:nth-of-type(23),
 .left-top .header-channel-fixed-right-item:nth-of-type(24),
-.left-top .header-channel-fixed-right-item:nth-of-type(26),
-.left-bottom .header-channel-fixed-right-item:nth-of-type(23),
-.left-bottom .header-channel-fixed-right-item:nth-of-type(24),
-.left-bottom .header-channel-fixed-right-item:nth-of-type(26) {
+.left-top .header-channel-fixed-right-item:nth-of-type(26) {
     letter-spacing: 0px;
 }
 
@@ -215,29 +173,15 @@ export default {
     position: relative;
 }
 
+
 .header-channel-fixed-right-left .left-top {
     display: inline-grid;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 根据需要调整列的最小宽度 */
+    grid-auto-flow: row; /* 按行排列 */
     position: relative;
-    grid-auto-flow: column;
+    gap: 14px 10px; /* 调整间距 */
 }
 
-.header-channel-fixed-right-right {
-    display: inline-grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-flow: column;
-    grid-template-rows: var(--item_height) var(--item_height);
-    grid-column: span 3;
-}
-
-.header-channel-fixed-right .left-bottom {
-    display: inline-grid;
-    grid-template-rows: repeat(1, 1fr);
-    position: relative;
-}
-
-.header-channel-fixed-right .left-bottom,
-.header-channel-fixed-right-right,
 .header-channel-fixed-right-left .left-top,
 .header-channel-fixed-right {
     grid-gap: 14px 10px;
@@ -259,18 +203,11 @@ export default {
         grid-template-columns: repeat(9, 1fr);
     }
 
-    .header-channel-fixed-right .left-bottom {
-        grid-column: span 12;
-        grid-template-columns: repeat(12, 1fr);
-    }
-
     .header-channel-fixed-right-left .left-top {
         grid-column: span 9;
         grid-template-columns: repeat(9, 1fr);
     }
 
-    .header-channel-fixed-right .left-bottom,
-    .header-channel-fixed-right-right,
     .header-channel-fixed-right-left .left-top,
     .header-channel-fixed-right {
         font-size: 13px;
@@ -278,10 +215,6 @@ export default {
     }
 
     .left-top .header-channel-fixed-right-item:nth-of-type(1n + 19) {
-        display: none !important;
-    }
-
-    .left-bottom .header-channel-fixed-right-item:nth-of-type(-1n + 18) {
         display: none !important;
     }
 }
@@ -297,11 +230,6 @@ export default {
         grid-template-columns: repeat(11, 1fr);
     }
 
-    .header-channel-fixed-right .left-bottom {
-        grid-column: span 14;
-        grid-template-columns: repeat(14, 1fr);
-    }
-
     .header-channel-fixed-right-left .left-top {
         grid-column: span 11;
         grid-template-columns: repeat(11, 1fr);
@@ -311,9 +239,6 @@ export default {
         display: none !important;
     }
 
-    .left-bottom .header-channel-fixed-right-item:nth-of-type(-1n + 22) {
-        display: none !important;
-    }
 }
 
 @media (min-width: 1701px) and (max-width: 2199.9px) {
@@ -332,21 +257,12 @@ export default {
         grid-template-columns: repeat(12, 1fr);
     }
 
-    .header-channel-fixed-right .left-bottom {
-        grid-column: span 15;
-        grid-template-columns: repeat(15, 1fr);
-    }
-
     .header-channel-fixed-right-left .left-top {
         grid-column: span 12;
         grid-template-columns: repeat(12, 1fr);
     }
 
     .left-top .header-channel-fixed-right-item:nth-of-type(1n + 25) {
-        display: none !important;
-    }
-
-    .left-bottom .header-channel-fixed-right-item:nth-of-type(-1n + 24) {
         display: none !important;
     }
 }
@@ -365,10 +281,6 @@ export default {
     .header-channel-fixed-right-left {
         grid-column: span 14;
         grid-template-columns: repeat(14, 1fr);
-    }
-
-    .header-channel-fixed-right .left-bottom {
-        display: none;
     }
 
     .header-channel-fixed-right-left .left-top {

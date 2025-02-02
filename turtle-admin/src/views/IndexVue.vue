@@ -57,12 +57,15 @@
                     : asideStatus == 1 ? `transform: translateX(0%); transition: transform 0.3s;`
                     : `transform: translateX(${asideOffsetX}px);`"
         >
-            <div class="aside-top">
-                <a class="logo" href="http://localhost:8789" target="_blank">
-                    <img src="~assets/img/teriteri-pink.png" alt="">
-                </a>
-            </div>
             <div class="aside-middle">
+                <div class="aside-top">
+                <a href="http://localhost:8789" target="_blank">
+                </a>
+                <picture class="logo">
+                    <img src="~assets/img/logo.png" alt="Logo">
+                </picture>
+                <span>TurtleTube</span>
+            </div>
                 <el-menu :default-openeds="defOpenMenu" :default-active="active" class="nav-menu" router="true">
                     <el-menu-item index="/home">
                         <i class="iconfont icon-shouye1"></i>
@@ -517,22 +520,42 @@ export default {
 }
 
 .aside-top {
-    height: 100px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 20px 20px -20px #55555514, 0 20px 30px -20px #5555550f, 0 10px 30px -30px #55555508;
     z-index: 2000;
     flex: 1 0 auto;
+    gap: 3px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.aside-top span {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1px; /* 缩小字母间隙 */
+    font-stretch: condensed; /* 让字体更窄 */
+    color: #ff0000;
+    transition: color 0.3s ease-in-out;
+}
+
+.aside-top:hover span {
+    color: #c02d2d;
+}
+
+.aside-top:hover {
+    transform: scale(1.05);
 }
 
 .logo {
-    width: 200px;
     cursor: pointer;
 }
 
 .logo img {
-    width: 100%;
+    width: 35px;
 }
 
 .aside-middle {

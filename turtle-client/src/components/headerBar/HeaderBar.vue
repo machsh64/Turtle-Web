@@ -8,10 +8,11 @@
                 @mouseenter="isOpen = true"
                 @mouseleave="isOpen = false"
                 @click="this.$router.push('/')"
-            >
-                <picture class="logo">
-                    <img src="~assets/img/teriteri-pink.png" alt="">
-                </picture>     
+            >    
+            <picture class="logo">
+                <img src="~assets/img/logo.png" alt="Logo">
+            </picture>
+            <span>TurtleTube</span>
             </div>
         </div>
         <!-- 中间 -->
@@ -138,6 +139,15 @@
                 </div>
             </div>
         </div>
+                <div
+                class="right-entry-item right-entry-item--upload"
+                @click="this.$store.state.isLogin ? openNewPage('/platform/upload') : dialogVisible = true;"
+            >
+                <div class="upload-buttom">
+                    <i class="iconfont icon-shangchuan"></i>
+                    <span>投稿</span>
+                </div>
+            </div>
         <!-- 右边 -->
         <div class="right-entry">
             <div class="v-popover-wrap">
@@ -213,14 +223,14 @@
                 </VPopover>
             </div>
             <div class="v-popover-wrap">
-                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -100px;' : 'padding-top: 17px;'">
+                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -60px;' : 'padding-top: 17px;'">
                     <template #reference>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-shoucang"></i>
                         </div>
                     </template>
                     <template #content>
-                        <div style="height: 556.6px; width: 521.6px;" v-if="this.$store.state.isLogin">
+                        <div style="height: 556.6px; width: 421.6px;" v-if="this.$store.state.isLogin">
                             
                         </div>
                         <div class="not-login" v-else>
@@ -233,14 +243,14 @@
                 </VPopover>
             </div>
             <div class="v-popover-wrap">
-                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -50px;' : 'padding-top: 17px;'">
+                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -42px;' : 'padding-top: 17px;'">
                     <template #reference>
                         <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-lishijilu"></i>
                         </div>
                     </template>
                     <template #content>
-                        <div style="height: 556.6px; width: 371.6px;" v-if="this.$store.state.isLogin">
+                        <div style="height: 556.6px; width: 280.6px;" v-if="this.$store.state.isLogin">
                             
                         </div>
                         <div class="not-login" v-else>
@@ -333,15 +343,7 @@
                 </div>
             </div>
         </div>
-        <div
-                class="right-entry-item right-entry-item--upload"
-                @click="this.$store.state.isLogin ? openNewPage('/platform/upload') : dialogVisible = true;"
-            >
-                <div class="upload-buttom">
-                    <i class="iconfont icon-shangchuan"></i>
-                    <span>投稿</span>
-                </div>
-            </div>
+
     </div>
     <!-- 登录框 -->
     <el-dialog v-model="dialogVisible" :close-on-click-modal="false" destroy-on-close align-center>
@@ -614,7 +616,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 2%;
     max-width: 2560px;
     width: 100%;
     height: 45px;
@@ -643,14 +645,19 @@
 }
 
 .logo {
-    height: 40%;
+    height: 33%;
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    margin-right: -2px;
 }
 
 .logo img {
     height: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo img:hover {
+    transform: scale(1.1);
 }
 
 .icon-xiajiantou {
@@ -660,6 +667,27 @@
 .entry-title {
     display: flex;
     align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.entry-title span {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -1px; /* 缩小字母间隙 */
+    font-stretch: condensed; /* 让字体更窄 */
+    color: #ff0000;
+    transition: color 0.3s ease-in-out;
+}
+
+.entry-title:hover span {
+    color: #c02d2d;
+}
+
+.entry-title:hover {
+    transform: scale(1.05);
 }
 
 .entry-title .icon-xiajiantou {
@@ -1007,7 +1035,7 @@
 .right-entry {
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    margin-left: 10px;
     flex-shrink: 0;     /*容器空间不足时不缩小，即固定大小*/
 }
 
@@ -1096,7 +1124,7 @@
     position: absolute;
     z-index: 1;
     padding-top: 20px;
-    margin-left: -20px;
+    margin-left: -50px;
     cursor: default;
 }
 
@@ -1107,7 +1135,7 @@
 }
 
 .avatar-panel-popover {
-    width: 300px;
+    width: 200px;
     background-color: #fff;
     border-radius: 8px;
     padding: 0 24px 18px;
@@ -1424,11 +1452,11 @@
     align-items: center;
     justify-content: center;
     margin-left: 16px;
-    width: 90px;
+    width: 74px;
     height: 34px;
-    border-radius: 8px;
-    background: #fb7299;
-    color: #fff;
+    border-radius: 18px;
+    background: #c6c6c65c;
+    color: #000000;
     text-align: center;
     font-size: 14px;
     line-height: 34px;
@@ -1437,7 +1465,7 @@
 }
 
 .upload-buttom:hover {
-    background-color: #f992af;
+    background-color: #91919156;
 }
 
 .icon-shangchuan {
