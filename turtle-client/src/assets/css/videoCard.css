@@ -1,7 +1,7 @@
 .video-card {
     position: relative;
     --title-font-size: 15px;
-    --title-line-height: 22px;
+    --title-line-height: 12px;
     --subtitle-font-size: 13px;
     --subtitle-line-height: 17px;
     --info-margin-top: 8px;

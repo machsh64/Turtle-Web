@@ -2,7 +2,7 @@
     <div class="header-bar slide-down">
         <!-- 左边 -->
         <div class="left-entry">
-            <div
+            <button
                 class="entry-title"
                 v-if="isFixHeaderBar"
                 @mouseenter="isOpen = true"
@@ -13,7 +13,7 @@
                 <img src="~assets/img/logo.png" alt="Logo">
             </picture>
             <span>TurtleTube</span>
-            </div>
+            </button>
         </div>
         <!-- 中间 -->
         <div class="center-search-container" :style="isShowSearchInput ? '' : 'visibility: hidden;'">
@@ -670,6 +670,7 @@
     gap: 3px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
+    background-color: var(--bg1);
 }
 
 .entry-title span {
@@ -678,7 +679,7 @@
     font-weight: 700;
     letter-spacing: -1px; /* 缩小字母间隙 */
     font-stretch: condensed; /* 让字体更窄 */
-    color: #ff0000;
+    color: #212121;
     transition: color 0.3s ease-in-out;
 }
 

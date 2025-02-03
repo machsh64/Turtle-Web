@@ -58,14 +58,14 @@
                     : `transform: translateX(${asideOffsetX}px);`"
         >
             <div class="aside-middle">
-                <div class="aside-top">
+                <button class="aside-top">
                 <a href="http://localhost:8789" target="_blank">
                 </a>
                 <picture class="logo">
                     <img src="~assets/img/logo.png" alt="Logo">
                 </picture>
                 <span>TurtleTube</span>
-            </div>
+                </button>
                 <el-menu :default-openeds="defOpenMenu" :default-active="active" class="nav-menu" router="true">
                     <el-menu-item index="/home">
                         <i class="iconfont icon-shouye1"></i>
@@ -530,6 +530,7 @@ export default {
     gap: 3px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
+    background-color:  #fff;
 }
 
 .aside-top span {
@@ -538,7 +539,7 @@ export default {
     font-weight: 700;
     letter-spacing: -1px; /* 缩小字母间隙 */
     font-stretch: condensed; /* 让字体更窄 */
-    color: #ff0000;
+    color: #212121;
     transition: color 0.3s ease-in-out;
 }
 

@@ -5,11 +5,11 @@
             <!-- 信息搜索栏 -->
             <HeaderBar></HeaderBar>
             <!-- 固钉频道栏 -->
-            <HeaderChannel></HeaderChannel>
+            <HeaderChannel :currentMcId="mcId" @category-change="handleCategoryChange"></HeaderChannel>
         </div>
 
         <div class="layout-contaioner">
-            <!-- 侧边栏（可折叠）
+            <!-- 侧边栏（可折叠） 主体作功能集中，暂时取消侧边栏
             <SiderLayout :isCollapsed="isCollapsed" @toggle="toggleSidebar"></SiderLayout> -->
 
             <!-- 主体布局 -->
@@ -17,7 +17,7 @@
                 <div class="recommended-container">
                     <div class="container">
                         <!-- 轮播图 -->
-                        <div class="recommended-swipe">
+                        <div class="recommended-swipe" :style="mcId ? 'display:none' : ''">
                             <div class="recommended-swipe-core">
                                 <!-- 骨架屏 -->
                                 <div class="recommended-swipe-shim">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <!-- 随机推荐 -->
-                        <div class="feed-card" v-for="index in loadingRandom ? 11 : randomVideos.length" :key="index">
+                        <div class="feed-card" v-for="index in loadingRandom ? 11 : randomVideos.length" :style="mcId ? 'display:none' : ''" :key="index">
                             <div class="video-card">
                                 <!-- 骨架屏 -->
                                 <div class="video-card__skeleton" :class="loadingRandom ? 'loading_animation' : 'hide'">
@@ -60,7 +60,7 @@
                                 </div>
                                 <!-- 实体内容 -->
                                 <div class="video-card__wrap" v-if="!loadingRandom">
-                                    <a :href="`/video/${randomVideos[index - 1].video.vid}`" target="_blank">
+                                    <a :href="`/video/${randomVideos[index - 1].video.vid}`" target="_self">
                                         <div class="video-card__image">
                                             <div class="video-card__image--wrap">
                                                 <picture class="video-card__cover">
@@ -95,7 +95,7 @@
                                         <div class="video-card__info--right">
                                             <h3 class="video-card__info--tit">
                                                 <a :href="`/video/${randomVideos[index - 1].video.vid}`"
-                                                    target="_blank">
+                                                    target="_self">
                                                     {{ randomVideos[index - 1].video.title }}
                                                 </a>
                                             </h3>
@@ -104,7 +104,7 @@
                                                 </div>
                                                 <a class="video-card__info--owner"
                                                     :href="`/space/${randomVideos[index - 1].user.uid}`"
-                                                    target="_blank">
+                                                    target="_self">
                                                     <i class="iconfont icon-uper" :style="''"></i>
                                                     <span class="video-card__info--author">{{ randomVideos[index -
                                                         1].user.nickname }}</span>
@@ -133,7 +133,7 @@
                             </div>
                             <!-- 实体内容 -->
                             <div class="video-card__wrap">
-                                <a :href="`/video/${item.video.vid}`" target="_blank">
+                                <a :href="`/video/${item.video.vid}`" target="_self">
                                     <div class="video-card__image">
                                         <div class="video-card__image--wrap">
                                             <picture class="video-card__cover">
@@ -166,7 +166,7 @@
                                 <div class="video-card__info">
                                     <div class="video-card__info--right">
                                         <h3 class="video-card__info--tit">
-                                            <a :href="`/video/${item.video.vid}`" target="_blank"
+                                            <a :href="`/video/${item.video.vid}`" target="_self"
                                                 :title="item.video.title">
                                                 {{ item.video.title }}
                                             </a>
@@ -174,7 +174,7 @@
                                         <div class="video-card__info--bottom">
                                             <div class="video-card__info--icon-text" :style="'display: none;'">已关注</div>
                                             <a class="video-card__info--owner" :href="`/space/${item.user.uid}`"
-                                                target="_blank">
+                                                target="_self">
                                                 <i class="iconfont icon-uper" :style="''"></i>
                                                 <span class="video-card__info--author">{{ item.user.nickname }}</span>
                                                 <span class="video-card__info--date">
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="feed-roll-btn">
+                    <div class="feed-roll-btn" :style="mcId ? 'display:none' : ''">
                         <div class="roll-btn" @click="getRandomVideos(); refreshTime++;">
                             <i class="iconfont icon-shuaxin" :style="`transform: rotate(${refreshTime * 360}deg);`"></i>
                             <span>换一换</span>
@@ -251,6 +251,7 @@ export default {
             // 刷新次数
             refreshTime: 0,
             isCollapsed: true, // 侧边栏默认收起
+            mcId: '', // 视频种类，如果为空，则默认为全部，如果不为空，则根据mcId获取视频，并隐藏banner及随机推荐栏目
         }
     },
     computed: {
@@ -275,10 +276,13 @@ export default {
         // 获取游客累加推荐
         async getCumulativeVideos() {
             this.loadingMore = true;
-            let ids = this.vids.join(",");  // 用逗号连接成一个字符串
-            const res = await this.$get("/video/cumulative/visitor", {
-                params: { vids: ids }
-            });
+            const params = {
+                    // 已推荐过的视频列表，传过去不再推荐
+                    vids: this.vids.join(","),
+                    // 视频category
+                    mcId: this.mcId || undefined,
+                };
+            const res = await this.$get("/video/cumulative/visitor", {params});
             if (res.data.data) {
                 this.cumulativeVideos.push(...res.data.data.videos);
                 this.vids.push(...res.data.data.vids);
@@ -286,6 +290,17 @@ export default {
             }
             // console.log(this.cumulativeVideos);
             this.loadingMore = false;
+        },
+        // 监听handerChannel里的mcId，控制数据
+        handleCategoryChange(mcId) {
+            this.mcId = mcId;
+            this.resetCumulativeData();
+            this.getCumulativeVideos();
+        },
+        resetCumulativeData() {
+            this.cumulativeVideos = [];
+            this.vids = [];
+            this.hasMore = true;
         },
 
         async handleScroll() {
@@ -372,7 +387,7 @@ export default {
 
 .large-header {
     background-color: #fff;
-    min-height: 101px;
+    min-height: 96px;
     position: relative;
     margin: 0 auto;
     max-width: 2560px;
@@ -570,7 +585,8 @@ header .window-cover {
 /* 主体布局：包含侧边栏和内容区 */
 .layout-container {
     display: flex;
-    margin-top: 60px; /* 避免被顶部栏遮挡 */
+    margin-top: 60px;
+    /* 避免被顶部栏遮挡 */
     height: calc(100vh - 60px);
 }
 
@@ -631,7 +647,7 @@ header .window-cover {
     }
 
     .container>*:nth-of-type(n + 6) {
-        margin-top: 20px;
+        margin-bottom: 15px;
     }
 
     .container .feed-card:nth-of-type(n + 10) {
@@ -646,7 +662,7 @@ header .window-cover {
     }
 
     .container>*:nth-of-type(n + 8) {
-        margin-top: 40px;
+        margin-bottom: 25px;
     }
 }
 

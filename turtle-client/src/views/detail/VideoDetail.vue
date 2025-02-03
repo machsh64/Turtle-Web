@@ -33,9 +33,18 @@
                     </div>
                 </div>
                 <!-- 播放器组件 -->
-                <PlayerWrap :videoUrl="video.videoUrl" :title="video.title" :duration="video.duration" :user="user"
-                    :population="population" v-model:jumpTimePoint="jumpTimePoint" v-model:autonext="autonext"
-                    @resize="updatePlayerSize" @sendDm="sendDanmu" @next="next"></PlayerWrap>
+                <PlayerWrap 
+                    :videoUrl="video.videoUrl" 
+                    :title="video.title" 
+                    :duration="video.duration" 
+                    :user="user"
+                    :population="population" 
+                    v-model:jumpTimePoint="jumpTimePoint" 
+                    v-model:autonext="autonext"
+                    @resize="updatePlayerSize" 
+                    @sendDm="sendDanmu" 
+                    @next="next"
+                    ></PlayerWrap>
                 <!-- 三连转发 -->
                 <div class="video-toolbar-container">
                     <div class="video-toolbar-left">
@@ -232,7 +241,7 @@
                             <div class="video-page-card-small" v-if="recommendVideos.length > 0">
                                 <div class="card-box">
                                     <div class="pic-box">
-                                        <div class="pic" @click="changeVideo(recommendVideos[0].video.vid)">
+                                        <div class="pic" @click="navigateToVideo(recommendVideos[0].video.vid)">
                                             <img :src="recommendVideos[0].video.coverUrl" alt="">
                                             <span class="duration">
                                                 {{ handleDuration(recommendVideos[0].video.duration) }}
@@ -240,7 +249,7 @@
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <p class="title" @click="changeVideo(recommendVideos[0].video.vid)">
+                                        <p class="title" @click="navigateToVideo(recommendVideos[0].video.vid)">
                                             {{ recommendVideos[0].video.title }}
                                         </p>
                                         <a :href="`/space/${recommendVideos[0].user.uid}`" target="_blank"
@@ -292,13 +301,13 @@
                                 :key="index">
                                 <div class="card-box">
                                     <div class="pic-box">
-                                        <div class="pic" @click="changeVideo(item.video.vid)">
+                                        <div class="pic" @click="navigateToVideo(item.video.vid)">
                                             <img :src="item.video.coverUrl" alt="">
                                             <span class="duration">{{ handleDuration(item.video.duration) }}</span>
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <p class="title" @click="changeVideo(item.video.vid)">{{ item.video.title }}</p>
+                                        <p class="title" @click="navigateToVideo(item.video.vid)">{{ item.video.title }}</p>
                                         <a :href="`/space/${item.user.uid}`" target="_blank" class="upname">
                                             <svg t="1703614018039" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                                 xmlns="http://www.w3.org/2000/svg" p-id="4221" width="18" height="18">
@@ -686,7 +695,10 @@ export default {
                 await this.getRecommendVideos();
             }
         },
-
+        navigateToVideo(vid) {
+            // 使用 router.push 改变 URL
+            this.$router.push(`/video/${vid}`);
+        },
         // 视频播放结束自动连播
         next() {
             if (this.recommendVideos[0]) {
@@ -763,6 +775,15 @@ export default {
         // 路由变化要关闭收藏对话框
         "$route.path"() {
             this.collectVisible = false;
+            // 从路由检测当前视频的vid是否和路由一致，如果一致则不在此处进行跳转
+            console.log("当前视频路径是:  " + this.$route.path);
+            const match = this.$route.path.match(/\/video\/(\d+)/);
+            if (match && match[1]) {
+                this.videoId = match[1]; // 提取匹配的数字部分，即 "12"
+            }
+            console.log(this.videoId); // 输出 "12"
+            this.changeVideo(this.videoId);
+            console.log("当前视频vid是：  " + this.video.vid)
         },
         // 当前页面下重新登录要重新获取收藏夹ID 退出登录要清空收藏夹ID
         "$store.state.isLogin"(curr) {

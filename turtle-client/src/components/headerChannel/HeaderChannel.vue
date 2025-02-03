@@ -12,18 +12,25 @@
                     <span>热门</span>
                 </div>
             </div>
-            <div class="header-channel-fixed-center"></div>
             <div class="header-channel-fixed-right">
                 <div class="header-channel-fixed-right-left">
                     <div class="left-top">
-                        <a :href="`/category/${item.mcId}`" target="_blank" class="header-channel-fixed-right-item"
-                            v-for="(item, index) in channels" :key="index">
+                        <!-- 全部按钮 -->
+                        <button :class="['header-channel-fixed-right-item', { active: currentMcId === '' }]"
+                            @click.prevent="handleCategoryClick('')">
+                            全部
+                        </button>
+
+                        <!-- 分类按钮 -->
+                        <button :class="['header-channel-fixed-right-item', { active: currentMcId === item.mcId }]"
+                            v-for="(item, index) in channels" :key="index"
+                            @click.prevent="handleCategoryClick(item.mcId)">
                             {{ item.mcName }}
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="header-channel-fixed-arrow">
+            <div class="header-channel-fixed-arrow" @click="ChangeChannelDown(isChannelDown)">
                 <div class="iconfont icon-xiajiantou" :style="isChannelDown ? 'transform: rotate(180deg);' : ''"></div>
             </div>
         </div>
@@ -39,6 +46,13 @@ export default {
             isChannelDown: false,
         }
     },
+    props: {
+        // 接收父组件传递的当前选中mcId
+        currentMcId: {
+            type: String,
+            default: ''
+        }
+    },
     computed: {
         // 频道列表
         channels() {
@@ -49,6 +63,12 @@ export default {
         // 打开新标签页
         openNewPage(route) {
             window.open(this.$router.resolve(route).href, '_blank');
+        },
+        handleCategoryClick(mcId) {
+            this.$emit('category-change', mcId);
+        },
+        ChangeChannelDown(isChannelDown) {
+            this.isChannelDown = !isChannelDown;
         }
     }
 }
@@ -83,6 +103,25 @@ export default {
     --left_width: 140px;
     --left_width_item: 70px;
     --item_height: 28px;
+}
+
+.header-channel-fixed-right-item.active {
+    color: #000000 !important;
+    /* 主题色 */
+    background-color: var(--graph_bg_thick);
+    font-weight: 500;
+    position: relative;
+}
+
+.header-channel-fixed-right-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: #0b0b0b;
 }
 
 .header-channel-fixed-container {
@@ -176,10 +215,13 @@ export default {
 
 .header-channel-fixed-right-left .left-top {
     display: inline-grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 根据需要调整列的最小宽度 */
-    grid-auto-flow: row; /* 按行排列 */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    /* 根据需要调整列的最小宽度 */
+    grid-auto-flow: row;
+    /* 按行排列 */
     position: relative;
-    gap: 14px 10px; /* 调整间距 */
+    gap: 14px 10px;
+    /* 调整间距 */
 }
 
 .header-channel-fixed-right-left .left-top,
@@ -214,9 +256,6 @@ export default {
         grid-gap: 14px 8px;
     }
 
-    .left-top .header-channel-fixed-right-item:nth-of-type(1n + 19) {
-        display: none !important;
-    }
 }
 
 @media (min-width: 1367px) and (max-width: 1700.9px) {
@@ -226,17 +265,13 @@ export default {
     }
 
     .header-channel-fixed-right-left {
-        grid-column: span 11;
-        grid-template-columns: repeat(11, 1fr);
+        grid-column: span 12;
+        grid-template-columns: repeat(12, 1fr);
     }
 
     .header-channel-fixed-right-left .left-top {
-        grid-column: span 11;
-        grid-template-columns: repeat(11, 1fr);
-    }
-
-    .left-top .header-channel-fixed-right-item:nth-of-type(1n + 23) {
-        display: none !important;
+        grid-column: span 12;
+        grid-template-columns: repeat(12, 1fr);
     }
 
 }

@@ -643,7 +643,6 @@ export default {
             }
         },
 
-
         //////// 事件 /////////
         // 根据窗口大小改变播放器的宽高
         changeWindowSize() {

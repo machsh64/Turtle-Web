@@ -26,7 +26,6 @@
 <style scoped>
 .notfound__body {
     width: 100%;
-    background-color: #fafafa;
 }
 
 .notfound-container {
