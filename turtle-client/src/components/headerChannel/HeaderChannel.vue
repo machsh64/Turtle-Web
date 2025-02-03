@@ -3,14 +3,14 @@
         <div class="header-channel-fixed-container" :class="isChannelDown ? 'header-channel-fixed-down' : ''"
             @mouseenter="isChannelDown = true;" @mouseleave="isChannelDown = false;">
             <div class="header-channel-fixed-left">
-                <div class="left-fixed-channel">
+                <button class="left-fixed-channel">
                     <i class="iconfont icon-fengche"></i>
                     <span>动态</span>
-                </div>
-                <div class="left-fixed-channel">
+                </button>
+                <button class="left-fixed-channel">
                     <i class="iconfont icon-huo"></i>
                     <span>热门</span>
-                </div>
+                </button>
             </div>
             <div class="header-channel-fixed-right">
                 <div class="header-channel-fixed-right-left">
@@ -156,6 +156,7 @@ export default {
     height: 28px;
     margin-bottom: 14px;
     align-items: center;
+    background-color: #00000000;
 }
 
 .left-fixed-channel .iconfont {

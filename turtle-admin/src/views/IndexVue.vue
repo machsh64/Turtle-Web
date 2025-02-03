@@ -530,7 +530,7 @@ export default {
     gap: 3px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
-    background-color:  #fff;
+    background-color:  #ffffff00;
 }
 
 .aside-top span {

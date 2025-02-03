@@ -16,7 +16,7 @@
                     </div>
                     <!-- 实体内容 -->
                     <div class="video-card__wrap">
-                        <a :href="`/video/${item.video.vid}`" target="_blank">
+                        <a :href="`/video/${item.video.vid}`" target="_self">
                             <div class="video-card__image">
                                 <div class="video-card__image--wrap">
                                     <picture class="video-card__cover">
@@ -49,12 +49,12 @@
                         <div class="video-card__info">
                             <div class="video-card__info--right">
                                 <h3 class="video-card__info--tit">
-                                    <a :href="`/video/${item.video.vid}`" target="_blank" :title="item.video.title" v-html="highlightKeyword(item.video.title)">
+                                    <a :href="`/video/${item.video.vid}`" target="_self" :title="item.video.title" v-html="highlightKeyword(item.video.title)">
                                     </a>
                                 </h3>
                                 <div class="video-card__info--bottom">
                                     <div class="video-card__info--icon-text" :style="'display: none;'">已关注</div>
-                                    <a class="video-card__info--owner" :href="`/space/${item.user.uid}`" target="_blank">
+                                    <a class="video-card__info--owner" :href="`/space/${item.user.uid}`" target="_self">
                                         <i class="iconfont icon-uper" :style="''"></i>
                                         <span class="video-card__info--author">{{ item.user.nickname }}</span>
                                         <span class="video-card__info--date">

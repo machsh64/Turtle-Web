@@ -462,10 +462,10 @@
                 this.saveToLocalStorage();
                 if (input === "") {
                     // 输入空白符跳转搜索首页
-                    this.openNewPage("/search");
+                    this.openPageLoc("/search");
                 } else {
                     // 否则就跳搜索详情页
-                    this.openNewPage(`/search/video?keyword=${input}`);
+                    this.openPageLoc(`/search/video?keyword=${input}`);
                 }
             },
 
@@ -562,6 +562,9 @@
             // 打开新标签页
             openNewPage(route) {
                 window.open(this.$router.resolve(route).href, '_blank');
+            },
+            openPageLoc(route) {
+                window.open(this.$router.resolve(route).href, '_self');
             },
 
             // 处理大于一万的数字
@@ -670,7 +673,7 @@
     gap: 3px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
-    background-color: var(--bg1);
+    background-color:#00000000;
 }
 
 .entry-title span {
