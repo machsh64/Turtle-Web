@@ -30,6 +30,10 @@ export function get(url, config) {
   instance.interceptors.response.use(
     (config) => {
       const code = config.data.code;
+       // 500 是我后段自己的报错，直接过
+       if (code === 500) {
+         return config;
+       }
       if (code !== 200) {
         ElMessage.error(config.data.message || '未知错误, 请打开控制台查看');
         if (config.data.message == "您不是管理员，无权访问") {
@@ -58,7 +62,7 @@ export function get(url, config) {
         store.state.isLoading = false;
         router.push("/login");
       } else {
-        ElMessage.error("特丽丽被玩坏了(¯﹃¯)");
+        ElMessage.error("看起来出了什么问题...");
         store.state.isLoading = false;
       }
     },
@@ -114,6 +118,10 @@ export function post(url, data, headers) {
   instance.interceptors.response.use(
     (config) => {
       const code = config.data.code;
+      // 500 是我后段自己的报错，直接过
+      if (code === 500) {
+        return config;
+      }
       if (code !== 200) {
         ElMessage.error(config.data.message || '未知错误, 请打开控制台查看');
         if (config.data.message == "您不是管理员，无权访问") {
@@ -142,7 +150,7 @@ export function post(url, data, headers) {
         store.state.isLoading = false;
         router.push("/login");
       } else {
-        ElMessage.error("特丽丽被玩坏了(¯﹃¯)");
+        ElMessage.error("看起来出了什么问题...");
         store.state.isLoading = false;
       }
     },

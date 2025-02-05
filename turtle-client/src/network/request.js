@@ -29,6 +29,10 @@ export function get(url, config) {
   instance.interceptors.response.use(
     (config) => {
       const code = config.data.code;
+      // 500 是我后段自己的报错，直接过
+      if (code === 500) {
+        return config;
+      }
       if (code && code !== 200)
         ElMessage.error(config.data.message || '未知错误, 请打开控制台查看');
       return config;
@@ -48,7 +52,7 @@ export function get(url, config) {
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
       } else {
-        ElMessage.error("特丽丽被玩坏了(¯﹃¯)");
+        ElMessage.error("看起来出了什么问题...");
         store.state.isLoading = false;
       }
     },
@@ -104,6 +108,10 @@ export function post(url, data, headers) {
   instance.interceptors.response.use(
     (config) => {
       const code = config.data.code;
+      // 500 是我后段自己的报错，直接过
+      if (code === 500) {
+        return config;
+      }
       if (code && code !== 200)
         ElMessage.error(config.data.message || '未知错误, 请打开控制台查看');
       return config;
@@ -123,7 +131,7 @@ export function post(url, data, headers) {
         ElMessage.error("请登录后查看");
         store.state.isLoading = false;
       } else {
-        ElMessage.error("特丽丽被玩坏了(¯﹃¯)");
+        ElMessage.error("看起来出了什么问题...");
         store.state.isLoading = false;
       }
     },

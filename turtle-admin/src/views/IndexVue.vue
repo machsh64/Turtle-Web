@@ -84,9 +84,9 @@
                             <i class="iconfont icon-lunbotu"></i>
                             <span>轮播图管理</span>
                         </el-menu-item>
-                        <el-menu-item index="/content/hot-search">
+                        <el-menu-item index="/content/video">
                             <i class="iconfont icon-resou"></i>
-                            <span>热搜管理</span>
+                            <span>视频管理</span>
                         </el-menu-item>
                         <el-menu-item index="/content/ranking">
                             <i class="iconfont icon-paihang"></i>
@@ -153,12 +153,7 @@
 
             </div>
         </aside>
-        <div class="masking" @click="changeAsideStatus"
-            :style="asideStatus == 0 ? `display: ${maskingDisplay}; opacity: 0; transition: opacity 0.3s;`
-                    : asideStatus == 1 && isMiniWidth ? `display: ${maskingDisplay}; opacity: 1; transition: opacity 0.3s;`
-                    : asideStatus == 1 && !isMiniWidth ? `display: ${maskingDisplay}; opacity: 0; transition: opacity 0.3s;`
-                    : `display: ${maskingDisplay}; opacity: ${maskingOpacity};`"
-        ></div>
+    
         <main class="admin-main" :style="`padding-left: ${left}px;`">
             <router-view></router-view>
         </main>

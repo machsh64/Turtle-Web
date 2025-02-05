@@ -5,7 +5,8 @@ const Login = () => import("@/views/LoginVue.vue");
 const Home = () => import("@/views/homePage/HomePage.vue");
 const Data = () => import("@/views/data/DataCenter.vue");
 const Carousel = () => import("@/views/content/CarouselManage.vue");
-const HotSearch = () => import("@/views/content/HotSearchManage.vue");
+const VideoCon = () => import("@/views/content/VideoCon.vue");
+const VideoConDetail = () => import("@/views/content/detail/VideoDetail.vue");
 const Ranking = () => import("@/views/content/RankingManage.vue");
 const Tag = () => import("@/views/content/TagManage.vue");
 const Video = () => import("@/views/review/VideoReview.vue");
@@ -33,7 +34,8 @@ const routes = [
         redirect: '/content/carousel',
         children: [
           { path: '/content/carousel', component: Carousel, meta: { requestAuth: true } },
-          { path: '/content/hot-search', component: HotSearch, meta: { requestAuth: true } },
+          { path: '/content/video', component: VideoCon, meta: { requestAuth: true } },
+          { path: '/content/videoDetail/:vid', name: 'videoConDetail', component: VideoConDetail, meta: { requestAuth: true } },
           { path: '/content/ranking', component: Ranking, meta: { requestAuth: true } },
           { path: '/content/tag', component: Tag, meta: { requestAuth: true } },
         ]

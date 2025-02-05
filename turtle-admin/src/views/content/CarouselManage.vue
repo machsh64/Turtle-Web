@@ -9,7 +9,7 @@
                     <el-input v-model="bannerTitle" placeholder=" 请输入标题"
                         style="width: 200px; margin-right: 10px;"></el-input>
                     <span><i class="el-icon-menu"></i> 状态：</span>
-                    <el-select v-model="bannerStatus" placeholder="选择状态" style="width: 150px; margin-right: 10px;">
+                    <el-select v-model="bannerStatus" placeholder=" 选择状态" style="width: 150px; margin-right: 10px;">
                         <el-option label=" 全部" value=""></el-option>
                         <el-option label=" 启用中" value="0"></el-option>
                         <el-option label=" 已下架" value="1"></el-option>
@@ -34,7 +34,8 @@
                                         <th style="min-width: 120px;">封面</th>
                                         <th style="min-width: 80px;">标题</th>
                                         <th style="min-width: 60px;">标题颜色</th>
-                                        <th style="min-width: 80px;">视频预览</th>
+                                        <th style="min-width: 60px;">类型</th>
+                                        <th style="min-width: 80px;">目标预览</th>
                                         <th style="min-width: 60px;">状态</th>
                                         <th style="min-width: 160px;">创建时间</th>
                                         <th style="min-width: 150px;">操作</th> <!-- 增加操作列 -->
@@ -55,9 +56,12 @@
                                         <td style="min-width: 60px;">
                                             <div class="color-block" :style="{ backgroundColor: item.color }"></div>
                                         </td>
+                                        <td style="min-width: 60px;">
+                                            {{ item.type === '0' ? '站内' : '站外' }}
+                                        </td>
                                         <td style="min-width: 80px;">
-                                            <span class="detail-btn" @click="openVideo(item.target)">
-                                                视频预览
+                                            <span class="detail-btn" @click="decideWichToGo(item)">
+                                                点击预览
                                             </span>
                                         </td>
                                         <td style="min-width: 60px;">
@@ -89,7 +93,7 @@
                             </div>
                         </div>
                         <div class="v-table-page">
-                            <el-pagination background layout="prev, pager, next" :total="total" :page-size="10"
+                            <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
                                 :pager-count="pagerCount" :current-page="page"
                                 @current-change="pageChange"></el-pagination>
                             <span class="total-count">总数: {{ total }}</span>
@@ -97,17 +101,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 视频预览弹窗 -->
-            <el-dialog class="video-preview" v-model="dialogVisible" title="视频预览" append-to-body>
-                <video v-if="currentVideo" :src="currentVideo" controls width="100%"
-                    style="border-radius: 8px;"></video>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="closeDialog">关闭</el-button>
-                    </span>
-                </template>
-            </el-dialog>
 
             <!-- 新增弹窗 -->
             <el-dialog style="width: 37%;" v-model="addDialogVisible" title="新增轮播图" append-to-body>
@@ -134,7 +127,16 @@
                     <el-form-item label="标题颜色">
                         <el-color-picker v-model="newCarousel.color" :show-alpha="false" format="hex"></el-color-picker>
                     </el-form-item>
-                    <el-form-item label="跳转URL">
+                    <el-form-item label="类型">
+                        <el-radio-group v-model="newCarousel.type">
+                            <el-radio :label="'0'">站内</el-radio>
+                            <el-radio :label="'1'">站外</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item v-if="newCarousel.type === '0'" label="视频vid">
+                        <el-input v-model="newCarousel.target"></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="newCarousel.type === '1'" label="跳转URL">
                         <el-input v-model="newCarousel.target"></el-input>
                     </el-form-item>
                     <el-form-item label="状态">
@@ -147,7 +149,7 @@
                 <template #footer>
                     <span class="dialog-footer">
                         <el-button @click="addDialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="createCarousel">确认</el-button>
+                        <el-button type="primary" @click="handleCreatreCarousel">确认</el-button>
                     </span>
                 </template>
             </el-dialog>
@@ -175,9 +177,19 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="标题颜色">
-                        <el-color-picker v-model="editingCarousel.color" :show-alpha="false" format="hex"></el-color-picker>
+                        <el-color-picker v-model="editingCarousel.color" :show-alpha="false"
+                            format="hex"></el-color-picker>
                     </el-form-item>
-                    <el-form-item label="跳转URL">
+                    <el-form-item label="类型">
+                        <el-radio-group v-model="editingCarousel.type">
+                            <el-radio :label="'0'">站内</el-radio>
+                            <el-radio :label="'1'">站外</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item v-if="editingCarousel.type === '0'" label="视频vid">
+                        <el-input v-model="editingCarousel.target"></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="editingCarousel.type === '1'" label="跳转URL">
                         <el-input v-model="editingCarousel.target"></el-input>
                     </el-form-item>
                     <el-form-item label="状态">
@@ -190,7 +202,7 @@
                 <template #footer>
                     <span class="dialog-footer">
                         <el-button @click="editDialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="updateCarousel">确认</el-button>
+                        <el-button type="primary" @click="handleUpdateCarousel">确认</el-button>
                     </span>
                 </template>
             </el-dialog>
@@ -255,7 +267,17 @@ export default {
             }
             console.log('banner列表: ', this.carousels);
         },
+        handleCreatreCarousel() {
+            this.checkVideoExist(this.newCarousel.type, this.newCarousel.target).then(isValid => {
+                if (isValid) {
+                    this.createCarousel();
+                }
+            })
+
+        },
         createCarousel() {
+            // 对target进行处理
+            this.newCarousel.target = this.washTarget(this.newCarousel.type, this.newCarousel.target)
             console.log('Create carousel:', this.newCarousel);
             // 发送请求新增轮播图数据
             this.$post("/admin/banner/add", this.newCarousel, {
@@ -275,7 +297,17 @@ export default {
                 console.error('Error creating carousel:', err);
             });
         },
+        handleUpdateCarousel() {
+            this.checkVideoExist(this.editingCarousel.type, this.editingCarousel.target).then(isValid => {
+                if (isValid) {
+                    this.updateCarousel();
+                }
+            })
+
+        },
         updateCarousel() {
+            // 对target进行处理
+            this.editingCarousel.target = this.washTarget(this.editingCarousel.type, this.editingCarousel.target)
             console.log('Update carousel:', this.editingCarousel);
             // 发送请求更新轮播图数据
             this.$post("/admin/banner/update", this.editingCarousel, {
@@ -508,27 +540,77 @@ export default {
         },
         editCarousel(item) {
             // 编辑页面点开
-            console.log('Edit carousel:', item);
             this.editingCarousel = { ...item };  // 复制当前行的数据到 editingCarousel
+            // 如果是站内视频，向用户展示需要清除 /video/ 前缀
+            if (item.type === '0') {
+                this.editingCarousel.target = item.target.replace('/video/', '');
+            }
             this.editDialogVisible = true;  // 显示编辑弹窗
         },
-        openVideo(target) {
-            console.log('Video target:', target);
-            this.currentVideo = target;
-            console.log('Video stastus:', this.dialogVisible);
-            this.dialogVisible = true;
-            console.log('Video stastus:', this.dialogVisible);
+        washTarget(type, target) {
+            // 如果是站内，则处理加上 /video/ 前缀，使其可以在用户端跳转
+            if (type === '0') {
+                return '/video/' + target;
+            }
+            // 如果是站外，则判断target是否是https或http开头，如果不是，则加上https
+            if (type === '1') {
+                if (!target.startsWith('https://') && !target.startsWith('http://')) {
+                    target = 'https://' + target;
+                }
+                return target;
+            }
+        },
+        // 检查已过审视频是否存在
+        checkVideoExist(type, vid) {
+            return new Promise((resolve) => {
+                // 如果是站外视频，直接通行
+                if (type === '1') {
+                    resolve(true)
+                }
+                if (type === '0') {
+                    const formData = new FormData();
+                    formData.append('vid', vid);
+                    formData.append('status', 1);
+                    this.$post("/admin/video-con/check", formData, {
+                        headers: {
+                            Authorization: "Bearer " + localStorage.getItem("token"),
+                        }
+                    }).then(res => {
+                        if (res.data.code === 200) {
+                            resolve(true)
+                        } else {
+                            this.$message.error('请确认该vid视频是否存在或已过审');
+                            resolve(false)
+                        }
+                    });
+                }
 
-            // 使用 $nextTick 确保视图更新
-            this.$nextTick(() => {
-                console.log('Dialog should be visible now');
             });
         },
-        closeDialog() {
-            this.dialogVisible = false;
-            this.currentVideo = '';  // 清空视频链接
+        // 判断站内外视频，决定跳转位置
+        decideWichToGo(item) {
+            // 如果是站内
+            if (item.type === '0') {
+                // 处理target，去掉 /video/前缀
+                item.target = item.target.replace('/video/', '');
+                // 打开新页面跳转
+                const route = {
+                    name: 'videoConDetail',
+                    params: {
+                        vid: item.target
+                    }
+                };
+                window.open(this.$router.resolve(route).href, '_blank');
+            }
+            // 如果是站外
+            if (item.type === '1') {
+                // 判断target是否是https或http开头，如果不是，则加上https
+                if (!item.target.startsWith('https://') && !item.target.startsWith('http://')) {
+                    item.target = 'https://' + item.target;
+                }
+                window.open(item.target, '_blank');
+            }
         },
-
     },
     async created() {
         this.changeWidth();
