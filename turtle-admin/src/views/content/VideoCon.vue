@@ -140,6 +140,7 @@
             <el-dialog style="width: 47%;" v-model="detailDialogVisible" title="视频详情数据" append-to-body>
                 <el-form :model="detailVideo" label-width="100px">
                     <el-row :gutter="20">
+                        
                         <el-col :span="12">
                             <el-form-item label="视频id: ">
                                 <span>{{ detailVideo.vid }}</span>
@@ -192,6 +193,8 @@
                                 </span>
                             </el-form-item>
                         </el-col>
+
+
                     </el-row>
                 </el-form>
                 <template #footer>
@@ -432,19 +435,6 @@ export default {
         closeAllDescrs() {
             // 关闭所有展开的标题
             this.expandedDescr = [];
-        },
-        handleClickOutside(event) {
-            // 检查点击是否在标题之外
-            const descrElements = document.querySelectorAll('.descr');
-            let isClickInside = false;
-            descrElements.forEach(element => {
-                if (element.contains(event.target)) {
-                    isClickInside = true;
-                }
-            });
-            if (!isClickInside) {
-                this.closeAllDescrs();
-            }
         },
 
         showDetail(item) {

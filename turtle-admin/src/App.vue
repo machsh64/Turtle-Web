@@ -27,6 +27,11 @@ export default {
       // console.log("频道列表: ", res);
       this.$store.commit("updateChannels", res.data.data);
     },
+    async getRoleList() {
+      let res = await this.$get("/admin/role/", {headers: {Authorization: "Bearer " + localStorage.getItem("token")}});
+      console.log("角色列表: ", res);
+      this.$store.commit("updateRoleList", res.data.data);
+    },
 
     // 加载蒙版的延迟渲染效果
     show() {
@@ -46,6 +51,7 @@ export default {
       this.$store.dispatch("getPersonalInfo");
     }
     this.getChannels();
+    this.getRoleList();
   },
   watch: {
     "$store.state.isLoading"(current) {

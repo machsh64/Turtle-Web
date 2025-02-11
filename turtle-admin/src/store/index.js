@@ -13,6 +13,7 @@ export default createStore({
         user: {},
         // 分区列表
         channels: [],
+        roleList: [],
     },
     mutations: {
         // 更新登录状态
@@ -29,6 +30,9 @@ export default createStore({
             state.channels = channels;
             // console.log("vuex中的分区: ", state.channels);
         },
+        updateRoleList(state, roleList) {
+            state.roleList = roleList;
+        }
     },
     actions: {
         // 获取当前用户信息

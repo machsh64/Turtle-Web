@@ -10,7 +10,7 @@
             <div class="obj"></div>
             <div class="obj"></div>
         </div>
-        <div class="loading-bottom">你感兴趣的视频都在T站</div>
+        <div class="loading-bottom">嗯，加载中...</div>
     </div>
 </template>
 
