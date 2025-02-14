@@ -13,6 +13,10 @@ import VueParticles from "vue3-particles"; // 粒子效果模板
 // 全局样式表
 import "./assets/css/base.css";
 
+// 引入 vue-echarts
+import VChart from "vue-echarts";
+import "echarts";
+
 const app = createApp(App);
 
 // 添加全局变量
@@ -30,3 +34,6 @@ app.use(store);
 app.use(router);
 app.use(VueParticles);
 app.mount("#app");
+// 注册 VChart 为全局组件
+app.component("v-chart", VChart);
+
