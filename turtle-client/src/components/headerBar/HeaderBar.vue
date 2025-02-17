@@ -2,48 +2,31 @@
     <div class="header-bar slide-down">
         <!-- 左边 -->
         <div class="left-entry">
-            <button
-                class="entry-title"
-                v-if="isFixHeaderBar"
-                @mouseenter="isOpen = true"
-                @mouseleave="isOpen = false"
-                @click="this.$router.push('/')"
-            >    
-            <picture class="logo">
-                <img src="~assets/img/logo.png" alt="Logo">
-            </picture>
-            <span>TurtleTube</span>
+            <button class="entry-title" v-if="isFixHeaderBar" @mouseenter="isOpen = true" @mouseleave="isOpen = false"
+                @click="this.$router.push('/')">
+                <picture class="logo">
+                    <img src="~assets/img/logo.png" alt="Logo">
+                </picture>
+                <span>TurtleTube</span>
             </button>
         </div>
         <!-- 中间 -->
         <div class="center-search-container" :style="isShowSearchInput ? '' : 'visibility: hidden;'">
             <div class="center-search__bar" :class="isSearchPopShow ? 'is-focus' : ''">
                 <!-- 输入框 -->
-                <div
-                    id="nav-searchform"
-                    :class="isSearchPopShow ? 'nav-searchform-active' : ''"
-                    ref="searchForm"
-                >
+                <div id="nav-searchform" :class="isSearchPopShow ? 'nav-searchform-active' : ''" ref="searchForm">
                     <div class="nav-search-content">
-                        <el-input
-                            class="nav-search-input"
-                            :class="isSearchPopShow ? 'nav-search-input-active' : ''"
-                            v-model="searchInput"
-                            placeholder="搜索"
-                            @focus="searchPopShow()"
-                            @keyup.enter="goSearch"
-                            @input="handleInput"
-                            @compositionstart="isComposite = true"
-                            @compositionend="compositionend"
-                        ></el-input>
+                        <el-input class="nav-search-input" :class="isSearchPopShow ? 'nav-search-input-active' : ''"
+                            v-model="searchInput" placeholder="搜索" @focus="searchPopShow()" @keyup.enter="goSearch"
+                            @input="handleInput" @compositionstart="isComposite = true"
+                            @compositionend="compositionend"></el-input>
                     </div>
-                    <div
-                        class="nav-search-clean"
-                        :style="searchInput == '' ? 'display: none;' : ''"
-                        @click.stop="searchInput = ''"
-                    >
+                    <div class="nav-search-clean" :style="searchInput == '' ? 'display: none;' : ''"
+                        @click.stop="searchInput = ''">
                         <!-- <i class="iconfont icon-close"></i> -->
-                        <el-icon size="16"><CircleCloseFilled /></el-icon>
+                        <el-icon size="16">
+                            <CircleCloseFilled />
+                        </el-icon>
                     </div>
                     <div class="nav-search-btn" @click="goSearch">
                         <i class="iconfont icon-sousuo"></i>
@@ -83,78 +66,77 @@
                         </div>
                         <div class="trendings-double" v-if="screenWidth >= 1450">
                             <div class="trendings-col" style="max-width: calc(50% - 5px);">
-                                <div
-                                    class="trending-item"
+                                <div class="trending-item"
                                     v-for="(item, index) in this.$store.state.trendings.filter((itm, idx) => idx % 2 === 0)"
-                                    :key="index"
-                                >
-                                    <div class="trending-wrap"  @click.stop="clickItemToSearch(item.content)">
-                                        <div class="trendings-rank" :class="index < 2 ? 'topThree' : ''">{{ index * 2 + 1 }}</div>
+                                    :key="index">
+                                    <div class="trending-wrap" @click.stop="clickItemToSearch(item.content)">
+                                        <div class="trendings-rank" :class="index < 2 ? 'topThree' : ''">{{ index * 2 +
+                                            1 }}</div>
                                         <div class="trendings-text">{{ item.content }}</div>
-                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark" v-if="item.type === 1">
-                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark" v-if="item.type === 2">
+                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark"
+                                            v-if="item.type === 1">
+                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark"
+                                            v-if="item.type === 2">
                                     </div>
                                 </div>
                             </div>
                             <div class="trendings-col" style="max-width: calc(50% - 5px);">
-                                <div
-                                    class="trending-item"
+                                <div class="trending-item"
                                     v-for="(item, index) in this.$store.state.trendings.filter((itm, idx) => idx % 2 !== 0)"
-                                    :key="index"
-                                >
+                                    :key="index">
                                     <div class="trending-wrap" @click.stop="clickItemToSearch(item.content)">
-                                        <div class="trendings-rank" :class="index < 1 ? 'topThree' : ''">{{ index * 2 + 2 }}</div>
+                                        <div class="trendings-rank" :class="index < 1 ? 'topThree' : ''">{{ index * 2 +
+                                            2 }}</div>
                                         <div class="trendings-text">{{ item.content }}</div>
-                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark" v-if="item.type === 1">
-                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark" v-if="item.type === 2">
+                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark"
+                                            v-if="item.type === 1">
+                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark"
+                                            v-if="item.type === 2">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="trendings-double" v-else>
                             <div class="trendings-col" style="margin-right: unset;">
-                                <div
-                                    class="trending-item"
-                                    v-for="(item, index) in this.$store.state.trendings"
-                                    :key="index"
-                                >
+                                <div class="trending-item" v-for="(item, index) in this.$store.state.trendings"
+                                    :key="index">
                                     <div class="trending-wrap" @click.stop="clickItemToSearch(item.content)">
-                                        <div class="trendings-rank" :class="index < 3 ? 'topThree' : ''">{{ index + 1 }}</div>
+                                        <div class="trendings-rank" :class="index < 3 ? 'topThree' : ''">{{ index + 1 }}
+                                        </div>
                                         <div class="trendings-text">{{ item.content }}</div>
-                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark" v-if="item.type === 1">
-                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark" v-if="item.type === 2">
+                                        <img src="~assets/img/icon_new.png" alt="" class="trending-mark"
+                                            v-if="item.type === 1">
+                                        <img src="~assets/img/icon_hot.png" alt="" class="trending-mark"
+                                            v-if="item.type === 2">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="suggestions" v-if="searchInput != ''">
-                        <div class="suggest-item"
-                            v-for="(item, index) in matchingWord"
-                            :key="index"
-                            v-html="highlightKeyword(item)"
-                            @click.stop="clickItemToSearch(item)"
-                        ></div>
+                        <div class="suggest-item" v-for="(item, index) in matchingWord" :key="index"
+                            v-html="highlightKeyword(item)" @click.stop="clickItemToSearch(item)"></div>
                     </div>
                 </div>
             </div>
         </div>
-                <div
-                class="right-entry-item right-entry-item--upload"
-                @click="this.$store.state.isLogin ? openNewPage('/platform/upload') : dialogVisible = true;"
-            >
-                <div class="upload-buttom">
-                    <i class="iconfont icon-shangchuan"></i>
-                    <span>投稿</span>
-                </div>
+        <div class="right-entry-item right-entry-item--upload"
+            @click="this.$store.state.isLogin ? openNewPage('/platform/upload') : dialogVisible = true;">
+            <div class="upload-buttom">
+                <i class="iconfont icon-shangchuan"></i>
+                <span>投稿</span>
             </div>
+        </div>
         <!-- 右边 -->
         <div class="right-entry">
+            <!-- 消息 -->
             <div class="v-popover-wrap">
                 <VPopover pop-style="padding-top: 17px;">
                     <template #reference>
-                        <div class="red-num--dynamic" v-if="user.uid && msgUnread > 0">{{ msgUnread > 99 ? '99+' : msgUnread }}</div>
-                        <div class="right-entry--outside" @click="this.$store.state.isLogin ? openNewPage('/message') : dialogVisible = true;">
+                        <div class="red-num--dynamic" v-if="user.uid && msgUnread > 0">{{ msgUnread > 99 ? '99+' :
+                            msgUnread }}</div>
+                        <div class="right-entry--outside"
+                            @click="this.$store.state.isLogin ? openNewPage('/message') : dialogVisible = true;">
                             <i class="iconfont icon-xinfeng"></i>
                         </div>
                     </template>
@@ -164,32 +146,32 @@
                                 <div class="message-inner-list__item" @click="openNewPage('/message/reply')">
                                     回复我的
                                     <span class="notify-number" v-if="this.$store.state.msgUnread[0] > 0">
-                                        {{ this.$store.state.msgUnread[0] <= 99 ? this.$store.state.msgUnread[0] : '99+' }}
-                                    </span>
+                                        {{ this.$store.state.msgUnread[0] <= 99 ? this.$store.state.msgUnread[0] : '99+'
+                                            }} </span>
                                 </div>
                                 <div class="message-inner-list__item" @click="openNewPage('/message/at')">
                                     @ 我的
                                     <span class="notify-number" v-if="this.$store.state.msgUnread[1] > 0">
-                                        {{ this.$store.state.msgUnread[1] <= 99 ? this.$store.state.msgUnread[1] : '99+' }}
-                                    </span>
+                                        {{ this.$store.state.msgUnread[1] <= 99 ? this.$store.state.msgUnread[1] : '99+'
+                                            }} </span>
                                 </div>
                                 <div class="message-inner-list__item" @click="openNewPage('/message/love')">
                                     收到的赞
                                     <span class="notify-number" v-if="this.$store.state.msgUnread[2] > 0">
-                                        {{ this.$store.state.msgUnread[2] <= 99 ? this.$store.state.msgUnread[2] : '99+' }}
-                                    </span>
+                                        {{ this.$store.state.msgUnread[2] <= 99 ? this.$store.state.msgUnread[2] : '99+'
+                                            }} </span>
                                 </div>
                                 <div class="message-inner-list__item" @click="openNewPage('/message/system')">
                                     系统消息
                                     <span class="notify-number" v-if="this.$store.state.msgUnread[3] > 0">
-                                        {{ this.$store.state.msgUnread[3] <= 99 ? this.$store.state.msgUnread[3] : '99+' }}
-                                    </span>
+                                        {{ this.$store.state.msgUnread[3] <= 99 ? this.$store.state.msgUnread[3] : '99+'
+                                            }} </span>
                                 </div>
                                 <div class="message-inner-list__item" @click="openNewPage('/message/whisper')">
                                     我的消息
                                     <span class="notify-number" v-if="this.$store.state.msgUnread[4] > 0">
-                                        {{ this.$store.state.msgUnread[4] <= 99 ? this.$store.state.msgUnread[4] : '99+' }}
-                                    </span>
+                                        {{ this.$store.state.msgUnread[4] <= 99 ? this.$store.state.msgUnread[4] : '99+'
+                                            }} </span>
                                 </div>
                             </div>
                         </div>
@@ -202,36 +184,19 @@
                     </template>
                 </VPopover>
             </div>
+            <!-- 收藏 -->
             <div class="v-popover-wrap">
-                <VPopover pop-style="padding-top: 17px;">
+                <VPopover
+                    :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -60px;' : 'padding-top: 17px;'">
                     <template #reference>
-                        <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
-                            <i class="iconfont icon-fengche"></i>
-                        </div>
-                    </template>
-                    <template #content>
-                        <div style="height: 557.3px; width: 371.6px;" v-if="this.$store.state.isLogin">
-                            
-                        </div>
-                        <div class="not-login" v-else>
-                            <p class="not-login-tips">登录即可查看关注动态</p>
-                            <div class="not-login-btn" @click="dialogVisible = true;">
-                                立即登录
-                            </div>
-                        </div>
-                    </template>
-                </VPopover>
-            </div>
-            <div class="v-popover-wrap">
-                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -60px;' : 'padding-top: 17px;'">
-                    <template #reference>
-                        <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
+                        <div class="right-entry--outside"
+                            @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
                             <i class="iconfont icon-shoucang"></i>
                         </div>
                     </template>
                     <template #content>
                         <div style="height: 556.6px; width: 421.6px;" v-if="this.$store.state.isLogin">
-                            
+
                         </div>
                         <div class="not-login" v-else>
                             <p class="not-login-tips">登录即可查看我的收藏</p>
@@ -242,16 +207,45 @@
                     </template>
                 </VPopover>
             </div>
+            <!-- 历史记录 -->
             <div class="v-popover-wrap">
-                <VPopover :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -42px;' : 'padding-top: 17px;'">
+                <VPopover
+                    :pop-style="this.$store.state.isLogin ? 'padding-top: 17px; margin-left: -82px;' : 'padding-top: 17px;'">
                     <template #reference>
-                        <div class="right-entry--outside" @click="this.$store.state.isLogin ? noPage() : dialogVisible = true;">
+                        <div class="right-entry--outside"
+                            @click="this.$store.state.isLogin ? openPageLoc('history') : dialogVisible = true;">
                             <i class="iconfont icon-lishijilu"></i>
                         </div>
                     </template>
                     <template #content>
-                        <div style="height: 556.6px; width: 280.6px;" v-if="this.$store.state.isLogin">
-                            
+                        <div style="height: 556.6px; width: 340.6px;" v-if="this.$store.state.isLogin">        
+                            <div class="play-history-list">
+                                <div class="history-header">
+                                <span class="history-title">最近播放</span>                                
+                            </div>
+                                <div class="play-history-item" @click="openPageLoc('/video/' + item.video.vid)"
+                                    v-for="(item, index) in userPlayHistory" :key="index">
+                                    <div class="play-history-item-cover">
+                                        <img :src="item.video.coverUrl" alt="cover">
+                                    </div>
+                                    <div class="play-history-item-info">
+                                        <p class="play-history-item-title">{{ item.video.title }}</p>
+                                        <p class="play-history-item-time">
+                                            <el-icon class="iconfont">
+                                                <Clock />
+                                            </el-icon>
+                                            {{ item.playTime }}
+                                        </p>
+                                        <p class="play-history-item-author">
+                                            <i class="iconfont icon-uper" :style="''"></i>
+                                            {{ item.user.nickname }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="see-more-btn" @click="openPageLoc('/history')">
+                                    <span>查看更多</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="not-login" v-else>
                             <p class="not-login-tips">登录即可查看历史记录</p>
@@ -270,14 +264,17 @@
             </div>
             <!-- 登录后显示头像 -->
             <div v-else class="header-avatar-wrap" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-                <a :href="`/space/${user.uid}`" target="_blank" class="header-avatar-wrap--container mini-avatar--small">
+                <a :href="`/space/${user.uid}`" target="_blank"
+                    class="header-avatar-wrap--container mini-avatar--small">
                     <picture class="v-img">
                         <img :src="user.avatar_url" :alt="`${user.nickname}的头像`" />
                     </picture>
                 </a>
                 <div class="v-popover to-bottom">
-                    <div class="avatar-panel-popover" :class="isPopoverShow ? 'popShow' : 'popHide'" :style="{ display: popoverDisplay }">
-                        <a :href="`/space/${user.uid}`" target="_blank" class="nickname" :class="user.vip !== 0 ? 'vip-name' : ''">
+                    <div class="avatar-panel-popover" :class="isPopoverShow ? 'popShow' : 'popHide'"
+                        :style="{ display: popoverDisplay }">
+                        <a :href="`/space/${user.uid}`" target="_blank" class="nickname"
+                            :class="user.vip !== 0 ? 'vip-name' : ''">
                             <span>{{ user.nickname }}</span>
                         </a>
                         <div class="vip-level-tag">
@@ -285,8 +282,12 @@
                                 {{ user.vip === 1 ? '月度' : user.vip === 2 ? '季度' : '年度' }}大会员
                             </div>
                             <VLevel class="level" :level="handleLevel(user.exp)" :size="12"></VLevel>
-                            <div class="gender female" v-if="user.gender == 0"><el-icon size="12"><Female /></el-icon></div>
-                            <div class="gender male" v-if="user.gender == 1"><el-icon size="12"><Male /></el-icon></div>
+                            <div class="gender female" v-if="user.gender == 0"><el-icon size="12">
+                                    <Female />
+                                </el-icon></div>
+                            <div class="gender male" v-if="user.gender == 1"><el-icon size="12">
+                                    <Male />
+                                </el-icon></div>
                         </div>
                         <div class="coins">
                             <span class="coins-text">硬币: </span>
@@ -308,31 +309,47 @@
                         </div>
                         <div class="single-item middle" @click="openNewPage('/account')">
                             <div class="single-item-left">
-                                <el-icon size="16"><User /></el-icon>
+                                <el-icon size="16">
+                                    <User />
+                                </el-icon>
                                 <span>个人中心</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
+                            </div>
+                            <el-icon>
+                                <ArrowRightBold />
+                            </el-icon>
                         </div>
                         <div class="single-item middle" @click="openNewPage('/message')">
                             <div class="single-item-left">
-                                <el-icon size="16"><Message /></el-icon>
+                                <el-icon size="16">
+                                    <Message />
+                                </el-icon>
                                 <span>消息列表</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
+                            </div>
+                            <el-icon>
+                                <ArrowRightBold />
+                            </el-icon>
                         </div>
                         <div class="single-item middle" @click="openNewPage('/platform/upload-manager')">
                             <div class="single-item-left">
-                                <el-icon size="16"><Document /></el-icon>
+                                <el-icon size="16">
+                                    <Document />
+                                </el-icon>
                                 <span>投稿管理</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
+                            </div>
+                            <el-icon>
+                                <ArrowRightBold />
+                            </el-icon>
                         </div>
                         <div class="single-item middle" @click="noPage">
                             <div class="single-item-left">
-                                <el-icon size="16"><Star /></el-icon>
+                                <el-icon size="16">
+                                    <Star />
+                                </el-icon>
                                 <span>推荐服务</span>
-                            </div>                            
-                            <el-icon><ArrowRightBold /></el-icon>
+                            </div>
+                            <el-icon>
+                                <ArrowRightBold />
+                            </el-icon>
                         </div>
                         <div class="placeholder"></div>
                         <div class="single-item logout" @click="logout">
@@ -352,266 +369,290 @@
 </template>
 
 <script>
-    let inTimer;  // 节流计时器
-    let outTimer;
-    import VPopover from '../popover/VPopover.vue';
-    import LoginRegister from '../loginRegister/LoginRegister.vue';
-    import VLevel from '@/components/UserCard/VLevel.vue';
-    import { ElMessage } from 'element-plus';
-    import { handleNum, handleLevel, highlightKeyword } from '@/utils/utils.js';
+let inTimer;  // 节流计时器
+let outTimer;
+import VPopover from '../popover/VPopover.vue';
+import LoginRegister from '../loginRegister/LoginRegister.vue';
+import VLevel from '@/components/UserCard/VLevel.vue';
+import { ElMessage } from 'element-plus';
+import { handleNum, handleLevel, highlightKeyword } from '@/utils/utils.js';
 
-    export default {
-        name: "HeaderBarIndex",
-        components: {
-            VPopover,
-            LoginRegister,
-            VLevel,
-        },
-        data() {
-            return {
-                // 首页是否展开频道
-                isOpen: false,
-                // 需要搜索的内容
-                searchInput: "",
-                // 是否正在输入中文
-                isComposite: false,
-                // 搜索推荐词
-                matchingWord: [],
-                // 是否显示搜索气泡框
-                isSearchPopShow: false,
-                // 搜索历史
-                histories: [],
-                // 是否展开搜索历史
-                isHistoryOpen: false,
-                // 头像气泡框的显隐
-                popoverDisplay: "none",
-                isPopoverShow: false,
-                // 登录框组件的显隐
-                dialogVisible: false,
-                // 屏幕宽度
-                screenWidth: window.innerWidth,
+export default {
+    name: "HeaderBarIndex",
+    components: {
+        VPopover,
+        LoginRegister,
+        VLevel,
+    },
+    data() {
+        return {
+            // 首页是否展开频道
+            isOpen: false,
+            // 需要搜索的内容
+            searchInput: "",
+            // 是否正在输入中文
+            isComposite: false,
+            // 搜索推荐词
+            matchingWord: [],
+            // 是否显示搜索气泡框
+            isSearchPopShow: false,
+            // 搜索历史
+            histories: [],
+            // 是否展开搜索历史
+            isHistoryOpen: false,
+            // 头像气泡框的显隐
+            popoverDisplay: "none",
+            isPopoverShow: false,
+            // 登录框组件的显隐
+            dialogVisible: false,
+            // 屏幕宽度
+            screenWidth: window.innerWidth,
+            userPlayHistory: [], // 用户播放记录
+        }
+    },
+    props: {
+        // 是否是固钉导航栏
+        isFixHeaderBar: {
+            type: Boolean,
+            default() {
+                return true;
             }
         },
-        props: {
-            // 是否是固钉导航栏
-            isFixHeaderBar: {
-                type: Boolean,
-                default() {
-                    return true;
-                }
-            },
-            // 是否显示搜索输入框
-            isShowSearchInput: {
-                type: Boolean,
-                default() {
-                    return true;
+        // 是否显示搜索输入框
+        isShowSearchInput: {
+            type: Boolean,
+            default() {
+                return true;
+            }
+        },
+    },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        },
+        // 计算消息未读数
+        msgUnread() {
+            let count = 0;
+            for (var i = 0; i < 5; i++) {
+                count += this.$store.state.msgUnread[i];
+            }
+            return count;
+        }
+    },
+    methods: {
+        //////// 请求 ////////
+
+        // 获取搜索推荐
+        async getMatchingWord() {
+            if (this.searchInput.trim() === "") return;
+            const keyword = encodeURIComponent(this.searchInput); // 对特殊字符进行编译
+            const res = await this.$get("/search/word/get", { params: { keyword: keyword } });
+            this.matchingWord = res.data.data;
+            // console.log("推荐搜索词:", this.matchingWord);
+        },
+
+        // 获取用户历史播放记录
+        async getPlayHistory() {
+            // 如果当前用户已登陆
+            if (this.$store.state.isLogin) {
+                const params = {
+                    offset: 0,  // 已获取的数量
+                    quantity: 10,   //  要获取的数量
+                };
+                const res = await this.$get("/video/user-play", {
+                    params,
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("token")
+                    },
+                });
+                if (res.data.data) {
+                    this.userPlayHistory = res.data.data;
                 }
             }
         },
-        computed: {
-            user() {
-                return this.$store.state.user;
-            },
-            // 计算消息未读数
-            msgUnread() {
-                let count = 0;
-                for (var i = 0; i < 5; i++) {
-                    count += this.$store.state.msgUnread[i];
-                }
-                return count;
-            }
+
+        //////// 事件 ////////
+
+        // 边输入边查询相关搜索词条
+        handleInput() {
+            if (this.isComposite) return;   // 如果正在输入拼音 就终止触发函数
+            this.getMatchingWord();
         },
-        methods: {
-            //////// 请求 ////////
 
-            // 获取搜索推荐
-            async getMatchingWord() {
-                if (this.searchInput.trim() === "") return;
-                const keyword = encodeURIComponent(this.searchInput); // 对特殊字符进行编译
-                const res = await this.$get("/search/word/get", {params: {keyword: keyword}});
-                this.matchingWord = res.data.data;
-                // console.log("推荐搜索词:", this.matchingWord);
-            },
+        // 完成中文输入
+        compositionend() {
+            this.isComposite = false;
+            this.handleInput();
+        },
 
-
-
-            //////// 事件 ////////
-
-            // 边输入边查询相关搜索词条
-            handleInput() {
-                if (this.isComposite) return;   // 如果正在输入拼音 就终止触发函数
-                this.getMatchingWord();
-            },
-
-            // 完成中文输入
-            compositionend() {
-                this.isComposite = false;
-                this.handleInput();
-            },
-
-            // 前往搜索的回调
-            goSearch() {
-                this.searchPopHide();
-                let input = this.searchInput.trim();
-                const index = this.histories.indexOf(input);
-                if (index != -1) {
-                    // 值已存在，移除该值
-                    this.histories.splice(index, 1);
-                }
-                this.histories.unshift(input);  // 在列表开头插入新记录
-                this.saveToLocalStorage();
-                if (input === "") {
-                    // 输入空白符跳转搜索首页
-                    this.openPageLoc("/search");
-                } else {
-                    // 否则就跳搜索详情页
-                    this.openPageLoc(`/search/video?keyword=${input}`);
-                }
-            },
-
-            // 显示搜索气泡框
-            searchPopShow() {
-                this.isSearchPopShow = true;
-                this.getMatchingWord();
-                // console.log("显示热搜框: ", this.isSearchPopShow);
-            },
-
-            // 隐藏搜索气泡框
-            searchPopHide() {
-                this.isSearchPopShow = false;
-                // console.log("显示热搜框: ", this.isSearchPopShow);
-            },
-
-            // 点击搜索框和气泡框外的空白处关闭气泡
-            handleOutsideClick(event) {
-                const formElement = this.$refs.searchForm; // 输入框元素
-                const popoverElement = this.$refs.searchPop; // 气泡框元素
-                if (
-                    !formElement.contains(event.target)
-                    &&! popoverElement.contains(event.target)
-                ) {
-                    this.searchPopHide();
-                }
-            },
-
-            // 将搜索历史存到浏览器
-            saveToLocalStorage() {
-                localStorage.setItem("historiesSearch", JSON.stringify(this.histories));
-            },
-
-            // 从浏览器中加载搜索历史
-            loadFromLocalStorage() {
-                const storedList = localStorage.getItem("historiesSearch");
-                // console.log("浏览器中的搜索历史: ", storedList);
-                if (storedList) {
-                    this.histories = JSON.parse(storedList);
-                }
-            },
-
-            // 在输入框按下回车的回调
-            onSubmit(e) {
-                // console.log(e);
-                if (e.key === 'Enter') {
-                    this.goSearch();
-                }
-            },
-
-            // 删除单个搜索历史
-            removeHistory(index) {
+        // 前往搜索的回调
+        goSearch() {
+            this.searchPopHide();
+            let input = this.searchInput.trim();
+            const index = this.histories.indexOf(input);
+            if (index != -1) {
+                // 值已存在，移除该值
                 this.histories.splice(index, 1);
-                this.saveToLocalStorage();
-            },
-
-            // 清空全部搜索历史
-            removeAllHistories() {
-                this.histories = [];
-                localStorage.removeItem("historiesSearch");
-            },
-
-            // 点击条目搜索
-            clickItemToSearch(value) {
-                this.searchInput = value;
-                this.goSearch();
-            },
-
-            // 悬浮头像时，气泡的显隐
-            handleMouseEnter() {
-                clearTimeout(outTimer);     // 这里要清除隐藏的计时器，否则在0.2秒内出入头像，会导致头像变大但气泡突然消失
-                inTimer = setTimeout(() => {
-                    this.popoverDisplay = "";
-                    this.isPopoverShow = true;
-                }, 100);
-            },
-            handleMouseLeave() {
-                clearTimeout(inTimer);    // 清除显示计时器防止快速经过头像时的气泡闪烁
-                this.isPopoverShow = false;
-                outTimer = setTimeout(() => {
-                    this.popoverDisplay = "none";
-                }, 200);
-            },
-
-            updateScreenWidth() {
-                this.screenWidth = window.innerWidth;
-            },
-
-            // 退出登录
-            logout() {
-                this.$store.dispatch("logout");
-            },
-
-            // 打开新标签页
-            openNewPage(route) {
-                window.open(this.$router.resolve(route).href, '_blank');
-            },
-            openPageLoc(route) {
-                window.open(this.$router.resolve(route).href, '_self');
-            },
-
-            // 处理大于一万的数字
-            handleNum(number) {
-                return handleNum(number);
-            },
-
-            // 计算用户等级
-            handleLevel(exp) {
-                return handleLevel(exp);
-            },
-
-            // 高亮关键词
-            highlightKeyword(text) {
-                return highlightKeyword(this.searchInput, text);
-            },
-
-            noPage() {
-                ElMessage.warning("该功能暂未开放");
+            }
+            this.histories.unshift(input);  // 在列表开头插入新记录
+            this.saveToLocalStorage();
+            if (input === "") {
+                // 输入空白符跳转搜索首页
+                this.openPageLoc("/search");
+            } else {
+                // 否则就跳搜索详情页
+                this.openPageLoc(`/search/video?keyword=${input}`);
             }
         },
-        mounted() {
-            // 页面渲染后创建点击事件的监听器
-            window.addEventListener("click", this.handleOutsideClick);
-            // 在页面加载时从本地存储中加载搜索历史
-            this.loadFromLocalStorage();
-            // 监听窗口大小变化，更新屏幕宽度
-            window.addEventListener('resize', this.updateScreenWidth);
+
+        // 显示搜索气泡框
+        searchPopShow() {
+            this.isSearchPopShow = true;
+            this.getMatchingWord();
+            // console.log("显示热搜框: ", this.isSearchPopShow);
         },
-        beforeUnmount() {
-            // 页面结束渲染前销毁事件的监听器
-            window.removeEventListener("click", this.handleOutsideClick);
-            window.removeEventListener('resize', this.updateScreenWidth);
+
+        // 隐藏搜索气泡框
+        searchPopHide() {
+            this.isSearchPopShow = false;
+            // console.log("显示热搜框: ", this.isSearchPopShow);
         },
-        watch: {
-            "$store.state.openLogin"(curr) {
-                if (curr) {
-                    this.dialogVisible = true;
-                }
+
+        // 点击搜索框和气泡框外的空白处关闭气泡
+        handleOutsideClick(event) {
+            const formElement = this.$refs.searchForm; // 输入框元素
+            const popoverElement = this.$refs.searchPop; // 气泡框元素
+            if (
+                !formElement.contains(event.target)
+                && !popoverElement.contains(event.target)
+            ) {
+                this.searchPopHide();
+            }
+        },
+
+        // 将搜索历史存到浏览器
+        saveToLocalStorage() {
+            localStorage.setItem("historiesSearch", JSON.stringify(this.histories));
+        },
+
+        // 从浏览器中加载搜索历史
+        loadFromLocalStorage() {
+            const storedList = localStorage.getItem("historiesSearch");
+            // console.log("浏览器中的搜索历史: ", storedList);
+            if (storedList) {
+                this.histories = JSON.parse(storedList);
+            }
+        },
+
+        // 在输入框按下回车的回调
+        onSubmit(e) {
+            // console.log(e);
+            if (e.key === 'Enter') {
+                this.goSearch();
+            }
+        },
+
+        // 删除单个搜索历史
+        removeHistory(index) {
+            this.histories.splice(index, 1);
+            this.saveToLocalStorage();
+        },
+
+        // 清空全部搜索历史
+        removeAllHistories() {
+            this.histories = [];
+            localStorage.removeItem("historiesSearch");
+        },
+
+        // 点击条目搜索
+        clickItemToSearch(value) {
+            this.searchInput = value;
+            this.goSearch();
+        },
+
+        // 悬浮头像时，气泡的显隐
+        handleMouseEnter() {
+            clearTimeout(outTimer);     // 这里要清除隐藏的计时器，否则在0.2秒内出入头像，会导致头像变大但气泡突然消失
+            inTimer = setTimeout(() => {
+                this.popoverDisplay = "";
+                this.isPopoverShow = true;
+            }, 100);
+        },
+        handleMouseLeave() {
+            clearTimeout(inTimer);    // 清除显示计时器防止快速经过头像时的气泡闪烁
+            this.isPopoverShow = false;
+            outTimer = setTimeout(() => {
+                this.popoverDisplay = "none";
+            }, 200);
+        },
+
+        updateScreenWidth() {
+            this.screenWidth = window.innerWidth;
+        },
+
+        // 退出登录
+        logout() {
+            this.$store.dispatch("logout");
+        },
+        // 打开新标签页
+        openNewPage(route) {
+            window.open(this.$router.resolve(route).href, '_blank');
+        },
+        openPageLoc(route) {
+            window.open(this.$router.resolve(route).href, '_self');
+        },
+
+        // 处理大于一万的数字
+        handleNum(number) {
+            return handleNum(number);
+        },
+
+        // 计算用户等级
+        handleLevel(exp) {
+            return handleLevel(exp);
+        },
+
+        // 高亮关键词
+        highlightKeyword(text) {
+            return highlightKeyword(this.searchInput, text);
+        },
+
+        noPage() {
+            ElMessage.warning("该功能暂未开放");
+        }
+    },
+    mounted() {
+        // 页面渲染后创建点击事件的监听器
+        window.addEventListener("click", this.handleOutsideClick);
+        // 在页面加载时从本地存储中加载搜索历史
+        this.loadFromLocalStorage();
+        // this.getPlayHistory();
+        // 监听窗口大小变化，更新屏幕宽度
+        window.addEventListener('resize', this.updateScreenWidth);
+    },
+    updated() {
+        // 查找用户最近播放记录
+        this.getPlayHistory();
+    },
+    beforeUnmount() {
+        // 页面结束渲染前销毁事件的监听器
+        window.removeEventListener("click", this.handleOutsideClick);
+        window.removeEventListener('resize', this.updateScreenWidth);
+    },
+    watch: {
+        "$store.state.openLogin"(curr) {
+            if (curr) {
+                this.dialogVisible = true;
             }
         }
     }
+}
 </script>
 
 <style scoped>
 .header-bar {
-    box-sizing: border-box; /* 让内边距不增加宽度 */
+    box-sizing: border-box;
+    /* 让内边距不增加宽度 */
     position: absolute;
     left: 0;
     top: 0;
@@ -628,7 +669,8 @@
 .left-entry {
     display: flex;
     align-items: center;
-    flex-shrink: 0;     /*容器空间不足时不缩小，即固定大小*/
+    flex-shrink: 0;
+    /*容器空间不足时不缩小，即固定大小*/
     margin-right: 20px;
     border: 0;
     font-family: inherit;
@@ -673,15 +715,17 @@
     gap: 3px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
-    background-color:#00000000;
+    background-color: #00000000;
 }
 
 .entry-title span {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 22px;
     font-weight: 700;
-    letter-spacing: -1px; /* 缩小字母间隙 */
-    font-stretch: condensed; /* 让字体更窄 */
+    letter-spacing: -1px;
+    /* 缩小字母间隙 */
+    font-stretch: condensed;
+    /* 让字体更窄 */
     color: #212121;
     transition: color 0.3s ease-in-out;
 }
@@ -730,18 +774,20 @@
     margin-right: 15px;
 }
 
-.icon-dianshi, .icon-xiazai {
+.icon-dianshi,
+.icon-xiazai {
     margin-right: 5px;
 }
 
 .center-search-container {
-    flex: 1 auto; /* 宽度占80% 居中*/
+    flex: 1 auto;
+    /* 宽度占80% 居中*/
     margin-left: 13%;
     height: 35px;
 }
 
 .center-search-container .is-focus {
-    box-shadow: 0 0 30px rgba(0,0,0,.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .1);
     border-radius: 8px;
 }
 
@@ -961,7 +1007,7 @@
 
 .header-bar .trendings-double {
     display: flex;
-    
+
 }
 
 .header-bar .trendings-double .trendings-col {
@@ -1031,7 +1077,8 @@
     margin-bottom: 4px;
 }
 
-.header-bar .suggest-item:hover, .header-bar .suggest-item:focus {
+.header-bar .suggest-item:hover,
+.header-bar .suggest-item:focus {
     outline: none;
     background: var(--graph_bg_thick);
 }
@@ -1040,7 +1087,8 @@
     display: flex;
     align-items: center;
     margin-left: 10px;
-    flex-shrink: 0;     /*容器空间不足时不缩小，即固定大小*/
+    flex-shrink: 0;
+    /*容器空间不足时不缩小，即固定大小*/
 }
 
 .default-login {
@@ -1081,9 +1129,11 @@
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    box-sizing: border-box;  /* 让内边距不增加宽度 */
+    box-sizing: border-box;
+    /* 让内边距不增加宽度 */
     border: 2px solid #fff;
-    transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease; /* 添加平滑过渡效果 */
+    transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease;
+    /* 添加平滑过渡效果 */
 }
 
 .v-img {
@@ -1106,13 +1156,15 @@
 }
 
 .header-avatar-wrap:hover .mini-avatar--small.shrink {
-    animation: shrink 0.3s both; /* 初始状态为缩小 */
+    animation: shrink 0.3s both;
+    /* 初始状态为缩小 */
 }
 
 @keyframes shrink {
-  to {
-    transform: scale(1); /* 缩小到原始大小 */
-  }
+    to {
+        transform: scale(1);
+        /* 缩小到原始大小 */
+    }
 }
 
 .v-img img {
@@ -1135,7 +1187,8 @@
 .to-bottom {
     top: 100%;
     left: 50%;
-    transform: translate3d(-50%,0,0);   /* 水平左移半个元素身位，使其水平与父元素居中 */
+    transform: translate3d(-50%, 0, 0);
+    /* 水平左移半个元素身位，使其水平与父元素居中 */
 }
 
 .avatar-panel-popover {
@@ -1143,41 +1196,53 @@
     background-color: #fff;
     border-radius: 8px;
     padding: 0 24px 18px;
-    box-shadow: 0 0 30px rgba(0,0,0,.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .1);
     border: 1px solid var(--line_regular);
 }
 
 .popHide {
     animation: fade-out 0.2s ease-out forwards;
-    transform-origin: top; /* 设置动画的旋转点为顶部 */
+    transform-origin: top;
+    /* 设置动画的旋转点为顶部 */
 }
 
 .popShow {
     animation: fade-in 0.2s ease-out forwards;
-    transform-origin: top; /* 设置动画的旋转点为顶部 */
+    transform-origin: top;
+    /* 设置动画的旋转点为顶部 */
 }
 
 /* 淡入动画 */
 @keyframes fade-in {
     0% {
-        opacity: 0; /* 初始状态透明 */
-        transform: translateY(-10px); /* 向上平移 10px，将元素隐藏在顶部 */
+        opacity: 0;
+        /* 初始状态透明 */
+        transform: translateY(-10px);
+        /* 向上平移 10px，将元素隐藏在顶部 */
     }
+
     100% {
-        opacity: 1; /* 最终状态不透明 */
-        transform: translateY(0); /* 平移恢复到原始位置 */
+        opacity: 1;
+        /* 最终状态不透明 */
+        transform: translateY(0);
+        /* 平移恢复到原始位置 */
     }
 }
 
 /* 淡出动画 */
 @keyframes fade-out {
     0% {
-        opacity: 1; /* 初始状态不透明 */
-        transform: translateY(0);   /* 原始位置 */
+        opacity: 1;
+        /* 初始状态不透明 */
+        transform: translateY(0);
+        /* 原始位置 */
     }
+
     100% {
-        opacity: 0; /* 最终状态透明 */
-        transform: translateY(-10px); /* 向上平移 10px，将元素隐藏在顶部 */
+        opacity: 0;
+        /* 最终状态透明 */
+        transform: translateY(-10px);
+        /* 向上平移 10px，将元素隐藏在顶部 */
     }
 }
 
@@ -1288,7 +1353,8 @@
     transition: 0.3s;
 }
 
-.counts-item:hover .count-num, .counts-item:hover .count-text {
+.counts-item:hover .count-num,
+.counts-item:hover .count-text {
     color: var(--brand_pink);
 }
 
@@ -1327,7 +1393,7 @@
 
 .logout {
     display: flex;
-    justify-content: initial !important; 
+    justify-content: initial !important;
 }
 
 .red-num--dynamic {
@@ -1374,6 +1440,112 @@
     font-size: 20px;
     display: inline-block;
     position: relative;
+}
+
+.history-header {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.history-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.play-history-list {
+    overflow-y: auto;
+    max-height: 555px;
+    /* 根据需要调整高度 */
+    margin-top: 5px;
+    padding: 0px;
+}
+
+.play-history-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 6px;
+    background-color: #f5f5f500;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+
+    .play-history-item-cover {
+        width: 120px;
+        height: 70px;
+        overflow: hidden;
+        border-radius: 4px;
+        margin-right: 15px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .play-history-item-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+
+        .history-item-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+
+        }
+
+        .play-history-item-time {
+            font-size: 11px;
+            color: #888;
+            margin-top: 19px;
+        }
+
+        .play-history-item-author {
+            font-size: 12px;
+            color: #666;
+            margin-top: 1px;
+        }
+
+        .play-history-item-time .iconfont {
+            vertical-align: middle;
+            line-height: 13px;
+            /* 与文字的行高相同 */
+        }
+
+        .play-history-item-author .iconfont {
+            vertical-align: middle;
+            line-height: 13px;
+            /* 与文字的行高相同 */
+        }
+
+    }
+}
+
+.see-more-btn {
+    padding: 10px;
+    text-align: center;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+
+    span {
+        font-size: 14px;
+        color: #666;
+    }
 }
 
 .message-entry-popover {
@@ -1492,9 +1664,10 @@
 
     .icon-shangchuan {
         margin-right: 0;
-    } 
+    }
 
-    .right-entry--outside span, .upload-buttom span {
+    .right-entry--outside span,
+    .upload-buttom span {
         display: none;
     }
 
@@ -1505,15 +1678,22 @@
 
 /* 跳动效果 */
 @keyframes jump {
-  0%, 100% {
-    transform: translateY(0); /* 起始和结束状态，图标回到原位 */
-  }
-  50% {
-    transform: translateY(-5px); /* 中间状态，图标向上跳动 20px */
-  }
+
+    0%,
+    100% {
+        transform: translateY(0);
+        /* 起始和结束状态，图标回到原位 */
+    }
+
+    50% {
+        transform: translateY(-5px);
+        /* 中间状态，图标向上跳动 20px */
+    }
 }
 
-.default-entry:hover span, .right-entry--outside:hover .iconfont {
-    animation: jump 0.3s; /* 应用跳动动画效果 */
+.default-entry:hover span,
+.right-entry--outside:hover .iconfont {
+    animation: jump 0.3s;
+    /* 应用跳动动画效果 */
 }
 </style>
